@@ -23,7 +23,7 @@ There are two ways to install from GitHub:
 
 ###### ZIP Download ######
 
-If you have downloaded *CiviCRM Groups Sync* as a ZIP file from the GitHub repository, do the following to install and activate the plugin and theme:
+If you have downloaded *CiviCRM Groups Sync* as a ZIP file from the git repository, do the following to install and activate the plugin and theme:
 
 1. Unzip the .zip file and, if needed, rename the enclosing folder so that the plugin's files are located directly inside `/wp-content/plugins/civicrm-groups-sync`
 2. Activate the plugin (in multisite, network activate)
@@ -31,4 +31,4 @@ If you have downloaded *CiviCRM Groups Sync* as a ZIP file from the GitHub repos
 
 ###### git clone ######
 
-If you have cloned the code from GitHub, it is assumed that you know what you're doing.
+If you have cloned the code from the git repository, it is assumed that you know what you're doing.
