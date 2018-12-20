@@ -1,0 +1,123 @@
+# Copyright (C) 2018 CiviCRM Groups Sync
+# This file is distributed under the same license as the CiviCRM Groups Sync package.
+msgid ""
+msgstr ""
+"Project-Id-Version: CiviCRM Groups Sync 0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/civicrm-groups-sync\n"
+"POT-Creation-Date: 2018-12-20 11:23:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: assets/templates/admin/settings-page.php:4
+#: includes/civicrm-groups-sync-admin.php:178
+#: includes/civicrm-groups-sync-admin.php:295
+msgid "CiviCRM Groups Sync"
+msgstr ""
+
+#: assets/templates/admin/settings-page.php:8 civicrm-groups-sync.php:324
+#: civicrm-groups-sync.php:330 includes/civicrm-groups-sync-admin.php:194
+msgid "Settings"
+msgstr ""
+
+#: assets/templates/admin/settings-page.php:31
+msgid "Settings go here."
+msgstr ""
+
+#: assets/templates/admin/settings-page.php:36
+msgid "Save Changes"
+msgstr ""
+
+#: assets/templates/help/settings-help.php:2
+msgid "Settings: For further information about using CiviCRM Groups Sync, please refer to the readme.txt file that comes with this plugin."
+msgstr ""
+
+#: civicrm-groups-sync.php:335
+msgid "Donate!"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:177
+#: includes/civicrm-groups-sync-admin.php:193
+msgid "CiviCRM Groups Sync: Settings"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:472
+msgid "You must supply a setting to setting_exists()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:495
+msgid "You must supply a setting to setting_get()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:517
+msgid "You must supply a setting to setting_set()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:538
+msgid "You must supply a setting to setting_delete()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:564
+msgid "You must supply an option to option_exists()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:591
+msgid "You must supply an option to option_get()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:617
+msgid "You must supply an option to option_set()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-admin.php:639
+msgid "You must supply an option to option_delete()"
+msgstr ""
+
+#: includes/civicrm-groups-sync-civicrm.php:152
+msgid "Create Synced Group"
+msgstr ""
+
+#: includes/civicrm-groups-sync-wordpress.php:294
+#: includes/civicrm-groups-sync-wordpress.php:299
+#: includes/civicrm-groups-sync-wordpress.php:329
+#: includes/civicrm-groups-sync-wordpress.php:340
+msgid "Untitled"
+msgstr ""
+
+#: includes/civicrm-groups-sync-wordpress.php:422
+msgid "Create a CiviCRM group"
+msgstr ""
+
+#: includes/civicrm-groups-sync-wordpress.php:424
+msgid "Checking this will create a CiviCRM group that is linked to this group. The group members will exist in both groups."
+msgstr ""
+
+#: includes/civicrm-groups-sync-wordpress.php:496
+msgid "Could not add user to group."
+msgstr ""
+
+#: includes/civicrm-groups-sync-wordpress.php:533
+msgid "Could not delete user from group."
+msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "CiviCRM Groups Sync"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/christianwach/civicrm-groups-sync"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the Groups plugin."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Christian Wach"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://haystack.co.uk"
+msgstr ""
