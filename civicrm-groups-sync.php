@@ -4,7 +4,7 @@ Plugin Name: CiviCRM Groups Sync
 Plugin URI: https://github.com/christianwach/civicrm-groups-sync
 Description: Keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the Groups plugin.
 Author: Christian Wach
-Version: 0.1
+Version: 0.1.1
 Author URI: http://haystack.co.uk
 Text Domain: civicrm-groups-sync
 Domain Path: /languages
@@ -15,7 +15,7 @@ Depends: CiviCRM
 
 
 // Set our version here.
-define( 'CIVICRM_GROUPS_SYNC_VERSION', '0.1' );
+define( 'CIVICRM_GROUPS_SYNC_VERSION', '0.1.1' );
 
 // Store reference to this file.
 if ( ! defined( 'CIVICRM_GROUPS_SYNC_FILE' ) ) {
