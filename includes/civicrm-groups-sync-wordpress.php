@@ -374,6 +374,63 @@ class CiviCRM_Groups_Sync_WordPress {
 
 
 	/**
+	 * Get a "Groups" group using a CiviCRM group ID.
+	 *
+	 * @since 0.1
+	 *
+	 * @param int $civicrm_group_id The ID of the CiviCRM group.
+	 * @return array|bool $wp_group The "Groups" group data, or false on failure.
+	 */
+	public function group_get_by_civicrm_id( $civicrm_group_id ) {
+
+		// Get the ID of the "Groups" group.
+		$wp_group_id = $this->plugin->civicrm->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
+
+		// Sanity check.
+		if ( empty( $wp_group_id ) ) {
+			return false;
+		}
+
+		// Get full group data.
+		$wp_group = Groups_Group::read( $wp_group_id );
+
+		// --<
+		return $wp_group;
+
+	}
+
+
+
+	/**
+	 * Get a "Groups" group ID using a CiviCRM group ID.
+	 *
+	 * @since 0.1
+	 *
+	 * @param int $civicrm_group_id The ID of the CiviCRM group.
+	 * @return int|bool $group_id The "Groups" group ID, or false on failure.
+	 */
+	public function group_get_wp_id_by_civicrm_id( $civicrm_group_id ) {
+
+		// Get the "Groups" group.
+		$wp_group = $this->group_get_by_civicrm_id( $civicrm_group_id );
+
+		// Sanity check.
+		if ( empty( $wp_group ) ) {
+			return false;
+		}
+
+		// --<
+		return $wp_group['group_id'];
+
+	}
+
+
+
+	//##########################################################################
+
+
+
+	/**
 	 * Filter the Add Group form.
 	 *
 	 * @since 0.1
