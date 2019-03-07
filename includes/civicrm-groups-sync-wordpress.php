@@ -197,6 +197,9 @@ class CiviCRM_Groups_Sync_WordPress {
 	 */
 	public function group_created( $group_id ) {
 
+		// Bail if our checkbox was not checked.
+		if ( ! $this->form_get_sync() ) return;
+
 		// Get full group data.
 		$group = Groups_Group::read( $group_id );
 
@@ -444,7 +447,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		ob_start();
 
 		// Include template.
-		include( CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups.php' );
+		include( CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups-create.php' );
 
 		// Save the output and flush the buffer.
 		$field = ob_get_clean();
@@ -470,6 +473,26 @@ class CiviCRM_Groups_Sync_WordPress {
 	 */
 	public function form_edit_filter( $content, $group_id ) {
 
+		// Get existing CiviCRM group.
+		$civicrm_group = $this->plugin->civicrm->group_get_by_wp_id( $group_id );
+
+		// Bail if there isn't one.
+		if ( $civicrm_group === false ) {
+			return;
+		}
+
+		// Start buffering.
+		ob_start();
+
+		// Include template.
+		include( CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups-edit.php' );
+
+		// Save the output and flush the buffer.
+		$field = ob_get_clean();
+
+		// Add field to form.
+		$content .= $field;
+
 		// --<
 		return $content;
 
@@ -478,13 +501,51 @@ class CiviCRM_Groups_Sync_WordPress {
 
 
 	/**
-	 * Intercept successful Group form.
+	 * Get our Group form variable.
+	 *
+	 * @since 0.1.1
+	 *
+	 * @return bool $sync True if the group should be synced, false otherwise.
+	 */
+	public function form_get_sync() {
+
+		// Do not sync by default.
+		$sync = false;
+
+		// Maybe override if our POST variable is set.
+		if ( isset( $_POST['civicrm-group-field'] ) AND $_POST['civicrm-group-field'] == 1 ) {
+			$sync = true;
+		}
+
+		// --<
+		return $sync;
+
+	}
+
+
+
+	/**
+	 * Intercept successful Group form submission.
+	 *
+	 * Unfortunately for our purposes, this callback is triggered after the
+	 * group has been created. We therefore have to check for our POST variable
+	 * in `group_created`, `group_updated` and `group_deleted` instead.
 	 *
 	 * @since 0.1
 	 *
 	 * @param int $group_id The numeric ID of the group.
 	 */
 	public function form_submitted( $group_id ) {
+
+		/*
+		$e = new Exception;
+		$trace = $e->getTraceAsString();
+		error_log( print_r( array(
+			'method' => __METHOD__,
+			'group_id' => $group_id,
+			//'backtrace' => $trace,
+		), true ) );
+		*/
 
 	}
 
