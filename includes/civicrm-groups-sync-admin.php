@@ -142,7 +142,7 @@ class CiviCRM_Groups_Sync_Admin {
 	public function register_hooks() {
 
 		// Add admin page to Settings menu.
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		//add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 	}
 
