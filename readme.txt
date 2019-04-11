@@ -1,5 +1,5 @@
 === CiviCRM Groups Sync ===
-Contributors: needle, tadpole
+Contributors: needle, kcristiano
 Donate link: https://www.paypal.me/interactivist
 Tags: civicrm, groups, sync
 Requires at least: 4.9
