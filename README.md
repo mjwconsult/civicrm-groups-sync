@@ -32,3 +32,23 @@ If you have downloaded *CiviCRM Groups Sync* as a ZIP file from the git reposito
 ###### git clone ######
 
 If you have cloned the code from the git repository, it is assumed that you know what you're doing.
+
+#### Adding Groups ####
+
+##### WordPress Groups #####
+
+When you add a group in WordPress, you'll be able to select an option that also creates a group in CiviCRM. This allows you to update a User in a WordPress group and it will update that contact in CiviCRM and add them to the CiviCRM group. 
+
+![CGS add group in WordPress](https://develop.tadpole.cc/danaskallman/civicrm-groups-sync/raw/docs/docs/images/cgs-wp-add-group.png)
+
+With the groups in WordPress, you'll be also be able to assign capabilities or ACLs so that users in that groups can access the parts of CiviCRM they can work on. 
+
+![CGS for capability/ACL management](https://develop.tadpole.cc/danaskallman/civicrm-groups-sync/raw/docs/docs/images/cgs-capabilities-mgmt.png)
+
+Tip: Add users as WordPress using the default user roles, like Subscriber or Author. Then add them to the appropriate group to get the ACLs needed to access CiviCRM. 
+
+##### CiviCRM Groups #####
+
+When adding a group in CiviCRM, there will be an option to also create a group in WordPress. These groups are all Access Control groups, since capabilities can be assigned to the groups, as referenced above.
+
+![CGS add group in CiviCRM](https://develop.tadpole.cc/danaskallman/civicrm-groups-sync/raw/docs/docs/images/cgs-add-group-civicrm.png)
