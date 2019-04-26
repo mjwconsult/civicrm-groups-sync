@@ -142,19 +142,46 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Get CiviCRM group.
 		$civicrm_group = $form->getVar( '_group' );
 
-		// If we have a group, bail.
-		if ( isset( $civicrm_group ) ) return;
-		if ( ! empty( $civicrm_group ) ) return;
+		// Assign template depending on whether we have a group.
+		if ( isset( $civicrm_group ) AND ! empty( $civicrm_group ) ) {
 
-		// Okay, it's the new group form.
+			// It's the edit group form.
 
-		// Add the field element to the form.
-		$form->add( 'checkbox', 'civicrm_groups_sync_create', __( 'Create Synced Group', 'civicrm-groups-sync' ) );
+			// Get the Groups group ID.
+			$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group->id );
 
-		// Insert template block into the page.
-		CRM_Core_Region::instance('page-body')->add( array(
-			'template' => 'civicrm-groups-sync-create.tpl'
-		));
+			// Bail if there isn't one.
+			if ( $wp_group_id === false ) {
+				return;
+			}
+
+			// Get the URL.
+			$group_url = $this->plugin->wordpress->group_get_url( $wp_group_id );
+
+			// Add the field element to the form.
+			$form->add( 'html', 'civicrm_groups_sync_edit', __( 'Existing Synced Group', 'civicrm-groups-sync' ) );
+
+			// Add URL.
+			$form->assign('civicrm_groups_sync_edit_url', $group_url);
+
+			// Insert template block into the page.
+			CRM_Core_Region::instance('page-body')->add( array(
+				'template' => 'civicrm-groups-sync-edit.tpl'
+			));
+
+		} else {
+
+			// It's the new group form.
+
+			// Add the field element to the form.
+			$form->add( 'checkbox', 'civicrm_groups_sync_create', __( 'Create Synced Group', 'civicrm-groups-sync' ) );
+
+			// Insert template block into the page.
+			CRM_Core_Region::instance('page-body')->add( array(
+				'template' => 'civicrm-groups-sync-create.tpl'
+			));
+
+		}
 
 	}
 
@@ -370,6 +397,41 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Target our object type.
 		if ( $object_name != 'Group' ) return;
+
+	}
+
+
+
+	//##########################################################################
+
+
+
+	/**
+	 * Get a CiviCRM group's admin URL.
+	 *
+	 * @since 0.1.1
+	 *
+	 * @param int $group_id The numeric ID of the CiviCRM group.
+	 * @return str $group_url The CiviCRM group's admin URL.
+	 */
+	public function group_get_url( $group_id ) {
+
+		// Kick out if no CiviCRM.
+		if ( ! $this->plugin->is_civicrm_initialised() ) return '';
+
+		// Get group URL.
+		$group_url = CRM_Utils_System::url( 'civicrm/group', 'reset=1&action=update&id=' . $group_id );
+
+		/**
+		 * Filter the URL of the CiviCRM group's admin page.
+		 *
+		 * @since 0.1.1
+		 *
+		 * @param str $group_url The existing URL.
+		 * @param int $group_id The numeric ID of the CiviCRM group.
+		 * @return str $group_url The modified URL.
+		 */
+		return apply_filters( 'civicrm_groups_sync_group_get_url_civi', $group_url, $group_id );
 
 	}
 

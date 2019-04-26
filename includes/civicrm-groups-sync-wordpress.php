@@ -377,6 +377,38 @@ class CiviCRM_Groups_Sync_WordPress {
 
 
 	/**
+	 * Get a "Groups" group's admin URL.
+	 *
+	 * @since 0.1.1
+	 *
+	 * @param int $group_id The numeric ID of the "Groups" group.
+	 * @return str $group_url The "Groups" group's admin URL.
+	 */
+	public function group_get_url( $group_id ) {
+
+		// Get group admin URL.
+		$group_url = admin_url( 'admin.php?page=groups-admin&group_id=' . $group_id . '&action=edit' );
+
+		/**
+		 * Filter the URL of the "Groups" group's admin page.
+		 *
+		 * @since 0.1.1
+		 *
+		 * @param str $group_url The existing URL.
+		 * @param int $group_id The numeric ID of the CiviCRM group.
+		 * @return str $group_url The modified URL.
+		 */
+		return apply_filters( 'civicrm_groups_sync_group_get_url_wp', $group_url, $group_id );
+
+	}
+
+
+
+	//##########################################################################
+
+
+
+	/**
 	 * Get a "Groups" group using a CiviCRM group ID.
 	 *
 	 * @since 0.1
@@ -478,8 +510,11 @@ class CiviCRM_Groups_Sync_WordPress {
 
 		// Bail if there isn't one.
 		if ( $civicrm_group === false ) {
-			return;
+			return $content;
 		}
+
+		// Get CiviCRM group admin URL for template.
+		$group_url = $this->plugin->civicrm->group_get_url( $civicrm_group['id'] );
 
 		// Start buffering.
 		ob_start();
@@ -580,11 +615,14 @@ class CiviCRM_Groups_Sync_WordPress {
 
 		// Maybe log on failure?
 		if ( ! $success ) {
+			$e = new Exception;
+			$trace = $e->getTraceAsString();
 			error_log( print_r( array(
 				'method' => __METHOD__,
 				'message' => __( 'Could not add user to group.', 'civicrm-groups-sync' ),
 				'user_id' => $user_id,
 				'group_id' => $group_id,
+				'backtrace' => $trace,
 			), true ) );
 		}
 
@@ -617,11 +655,14 @@ class CiviCRM_Groups_Sync_WordPress {
 
 		// Maybe log on failure?
 		if ( ! $success ) {
+			$e = new Exception;
+			$trace = $e->getTraceAsString();
 			error_log( print_r( array(
 				'method' => __METHOD__,
 				'message' => __( 'Could not delete user from group.', 'civicrm-groups-sync' ),
 				'user_id' => $user_id,
 				'group_id' => $group_id,
+				'backtrace' => $trace,
 			), true ) );
 		}
 
