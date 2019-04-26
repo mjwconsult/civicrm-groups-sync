@@ -3,7 +3,7 @@ Contributors: needle, kcristiano
 Donate link: https://www.paypal.me/interactivist
 Tags: civicrm, groups, sync
 Requires at least: 4.9
-Tested up to: 5.0
+Tested up to: 5.1
 Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -44,6 +44,11 @@ This plugin is in active development. For feature requests and bug reports (or i
 
 
 == Changelog ==
+
+= 0.1.1 =
+
+Create two-way links between CiviCRM and WordPress groups
+
 
 = 0.1 =
 
