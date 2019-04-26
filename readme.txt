@@ -30,7 +30,7 @@ By default, this plugin does not create a CiviCRM contact when a WordPress user 
 
 ### Plugin Development
 
-This plugin is in active development. For feature requests and bug reports (or if you're a plugin author and want to contribute) please visit the plugin's [GitHub repository](https://github.com/christianwach/civicrm-groups-sync).
+This plugin is in active development. For feature requests and bug reports (or if you're a plugin author and want to contribute) please visit the plugin's [GitHub repository](https://develop.tadpole.cc/plugins/civicrm-groups-sync).
 
 
 
