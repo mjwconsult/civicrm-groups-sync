@@ -601,6 +601,11 @@ class CiviCRM_Groups_Sync_WordPress {
 	 */
 	public function group_member_add( $user_id, $group_id ) {
 
+		// Bail if they are already a group member.
+		if ( Groups_User_Group::read( $user_id, $group_id ) ) {
+			return true;
+		}
+
 		// Remove hook.
 		remove_action( 'groups_created_user_group', array( $this, 'group_member_added' ), 10 );
 
@@ -643,6 +648,11 @@ class CiviCRM_Groups_Sync_WordPress {
 	 * @return bool $success True on success, false otherwise.
 	 */
 	public function group_member_delete( $user_id, $group_id ) {
+
+		// Bail if they are not a group member.
+		if ( ! Groups_User_Group::read( $user_id, $group_id ) ) {
+			return true;
+		}
 
 		// Remove hook.
 		remove_action( 'groups_deleted_user_group', array( $this, 'group_member_deleted' ), 10 );
