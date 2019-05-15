@@ -100,6 +100,9 @@ class CiviCRM_Groups_Sync_Admin {
 		// Load settings array.
 		$this->settings = $this->option_get( 'civicrm_groups_sync_settings', $this->settings );
 
+		// Upgrade settings.
+		$this->upgrade_settings();
+
 		// Register hooks.
 		$this->register_hooks();
 
@@ -114,7 +117,43 @@ class CiviCRM_Groups_Sync_Admin {
 	 */
 	public function upgrade_tasks() {
 
-		// None needed yet.
+		/*
+		// For upgrades by version, use something like the following.
+		if ( version_compare( CIVICRM_GROUPS_SYNC_VERSION, '0.3.4', '>=' ) ) {
+			// Do something
+		}
+		*/
+
+	}
+
+
+
+	/**
+	 * Upgrade settings when required.
+	 *
+	 * @since 0.1.2
+	 */
+	public function upgrade_settings() {
+
+		// Don't save by default.
+		$save = false;
+
+		/*
+		// Some setting may not exist.
+		if ( ! $this->setting_exists( 'some_setting' ) ) {
+
+			// Add it from defaults.
+			$settings = $this->settings_get_defaults();
+			$this->setting_set( 'some_setting', $settings['some_setting'] );
+			$save = true;
+
+		}
+		*/
+
+		// Save settings if need be.
+		if ( $save === true ) {
+			$this->settings_save();
+		}
 
 	}
 
@@ -438,6 +477,35 @@ class CiviCRM_Groups_Sync_Admin {
 
 
 	//##########################################################################
+
+
+
+	/**
+	 * Get default settings for this plugin.
+	 *
+	 * @since 0.1.2
+	 *
+	 * @return array $settings The default settings for this plugin.
+	 */
+	public function settings_get_defaults() {
+
+		// Init return.
+		$settings = array();
+
+		/**
+		 * Filter default settings.
+		 *
+		 * @since 0.1.2
+		 *
+		 * @param array $settings The array of default settings.
+		 * @return array $settings The modified array of default settings.
+		 */
+		$settings = apply_filters( 'civicrm_groups_sync_settings_default', $settings );
+
+		// --<
+		return $settings;
+
+	}
 
 
 
