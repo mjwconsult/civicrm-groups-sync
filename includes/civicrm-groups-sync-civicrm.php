@@ -974,7 +974,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 * @param int $user_id The numeric WordPress user ID.
 	 * @return array|bool $contact The CiviCRM contact data, or false on failure.
 	 */
-	public function contact_get_by_user_id( $contact_id ) {
+	public function contact_get_by_user_id( $user_id ) {
 
 		// Get the contact ID.
 		$contact_id = $this->contact_id_get_by_user_id( $user_id );
