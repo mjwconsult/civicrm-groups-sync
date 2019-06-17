@@ -23,7 +23,7 @@ There are two ways to install from GitHub:
 
 ###### ZIP Download ######
 
-If you have downloaded *CiviCRM Groups Sync* as a ZIP file from the git repository, do the following to install and activate the plugin and theme:
+If you have downloaded *CiviCRM Groups Sync* as a ZIP file from the git repository, do the following to install and activate the plugin:
 
 1. Unzip the .zip file and, if needed, rename the enclosing folder so that the plugin's files are located directly inside `/wp-content/plugins/civicrm-groups-sync`
 2. Activate the plugin (in multisite, network activate)
@@ -37,15 +37,15 @@ If you have cloned the code from the git repository, it is assumed that you know
 
 ##### WordPress Groups #####
 
-When you add a group in WordPress, you'll be able to select an option that also creates a group in CiviCRM. This allows you to update a User in a WordPress group and it will update that contact in CiviCRM and add them to the CiviCRM group. 
+When you add a group in WordPress, you'll be able to select an option that also creates a group in CiviCRM. This allows you to update a User in a WordPress group and it will update that contact in CiviCRM and add them to the CiviCRM group.
 
 ![CGS add group in WordPress](https://develop.tadpole.cc/danaskallman/civicrm-groups-sync/raw/docs/docs/images/cgs-wp-add-group.png)
 
-With the groups in WordPress, you'll be also be able to assign capabilities or ACLs so that users in that groups can access the parts of CiviCRM they can work on. 
+With the groups in WordPress, you'll be also be able to assign capabilities or ACLs so that users in that groups can access the parts of CiviCRM they can work on.
 
 ![CGS for capability/ACL management](https://develop.tadpole.cc/danaskallman/civicrm-groups-sync/raw/docs/docs/images/cgs-capabilities-mgmt.png)
 
-Tip: Add users as WordPress using the default user roles, like Subscriber or Author. Then add them to the appropriate group to get the ACLs needed to access CiviCRM. 
+Tip: Add users as WordPress using the default user roles, like Subscriber or Author. Then add them to the appropriate group to get the ACLs needed to access CiviCRM.
 
 ##### CiviCRM Groups #####
 
