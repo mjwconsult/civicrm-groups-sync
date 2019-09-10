@@ -323,7 +323,7 @@ function civicrm_groups_sync_action_links( $links, $file ) {
 
 		// Add settings link if not network activated and not viewing network admin.
 		$link = add_query_arg( array( 'page' => 'civicrm_groups_sync_parent' ), admin_url( 'options-general.php' ) );
-		$links[] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Settings', 'civicrm-groups-sync' ) . '</a>';
+		//$links[] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Settings', 'civicrm-groups-sync' ) . '</a>';
 
 		// Always add Paypal link.
 		$paypal = 'https://www.paypal.me/interactivist';
