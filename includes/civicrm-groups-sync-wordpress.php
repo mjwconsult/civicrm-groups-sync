@@ -449,13 +449,18 @@ class CiviCRM_Groups_Sync_WordPress {
 		// Get the "Groups" group.
 		$wp_group = $this->group_get_by_civicrm_id( $civicrm_group_id );
 
-		// Sanity check.
+		// Sanity check group.
 		if ( empty( $wp_group ) ) {
 			return false;
 		}
 
+		// Sanity check group ID.
+		if ( empty( $wp_group->group_id ) ) {
+			return false;
+		}
+
 		// --<
-		return $wp_group['group_id'];
+		return $wp_group->group_id;
 
 	}
 
