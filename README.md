@@ -17,6 +17,10 @@ By default, this plugin does not create a WordPress user when a CiviCRM contact 
 
 By default, this plugin does not create a CiviCRM contact when a WordPress user is added to a Groups group which is synced to a CiviCRM group. If you wish to do so, use a callback from the `civicrm_groups_sync_contact_id_get_by_user_id` filter to create a new CiviCRM contact and return the contact ID.
 
+##### BuddyPress compatibility #####
+
+If you are using both *BuddyPress* and *Groups* then you will also need [this plugin](https://github.com/itthinx/groups-buddypress-compatibility) in order to prevent conflicts between the two identically-named actions in these plugins.
+
 #### Installation ####
 
 There are two ways to install from GitHub:
