@@ -32,6 +32,10 @@ By default, this plugin does not create a CiviCRM contact when a WordPress user 
 
 If you are using both *BuddyPress* and *Groups* then you will also need [this plugin](https://github.com/itthinx/groups-buddypress-compatibility) in order to prevent conflicts between the two identically-named actions in these plugins.
 
+### Permissions Sync
+
+It may be useful to sync the capabilities/permissions using [CiviCRM Permissions Sync](https://develop.tadpole.cc/plugins/civicrm-permissions-sync)  Details are in the [README.md file](https://develop.tadpole.cc/plugins/civicrm-permissions-sync/-/blob/master/README.md)
+
 ### Plugin Development
 
 This plugin is in active development. For feature requests and bug reports (or if you're a plugin author and want to contribute) please visit the plugin's [GitHub repository](https://develop.tadpole.cc/plugins/civicrm-groups-sync).
