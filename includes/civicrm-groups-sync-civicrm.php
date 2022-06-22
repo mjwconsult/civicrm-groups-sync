@@ -68,26 +68,26 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Register template directory for form amends.
 		add_action( 'civicrm_config', [ $this, 'register_form_directory' ], 10 );
 
-		// Modify CiviCRM group create form.
+		// Modify CiviCRM Group Create form.
 		add_action( 'civicrm_buildForm', [ $this, 'form_group_create_build' ], 10, 2 );
 
-		// Intercept CiviCRM group create form submission process.
+		// Intercept CiviCRM Group Create form submission process.
 		add_action( 'civicrm_postProcess', [ $this, 'form_group_create_process' ], 10, 2 );
 
-		// Intercept before and after CiviCRM creating a group.
+		// Intercept before and after CiviCRM creating a Group.
 		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
 		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
-		// Intercept after CiviCRM updated a group.
+		// Intercept after CiviCRM updated a Group.
 		add_action( 'civicrm_post', [ $this, 'group_updated' ], 10, 4 );
 
-		// Intercept CiviCRM's add contacts to group.
+		// Intercept CiviCRM's add Contacts to Group.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10, 4 );
 
-		// Intercept CiviCRM's delete contacts from group.
+		// Intercept CiviCRM's delete Contacts from Group.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10, 4 );
 
-		// Intercept CiviCRM's rejoin contacts to group.
+		// Intercept CiviCRM's rejoin Contacts to Group.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_rejoined' ], 10, 4 );
 
 	}
@@ -125,7 +125,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Enable a Groups group to be created when creating a CiviCRM group.
+	 * Enable a Groups Group to be created when creating a CiviCRM Group.
 	 *
 	 * @since 0.1
 	 *
@@ -134,20 +134,20 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function form_group_create_build( $formName, &$form ) {
 
-		// Is this the group edit form?
+		// Is this the Group Edit form?
 		if ( $formName != 'CRM_Group_Form_Edit' ) {
 			return;
 		}
 
-		// Get CiviCRM group.
+		// Get CiviCRM Group.
 		$civicrm_group = $form->getVar( '_group' );
 
-		// Assign template depending on whether we have a group.
+		// Assign template depending on whether we have a Group.
 		if ( isset( $civicrm_group ) && ! empty( $civicrm_group ) ) {
 
-			// It's the edit group form.
+			// It's the Edit Group form.
 
-			// Get the Groups group ID.
+			// Get the Groups Group ID.
 			$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group->id );
 
 			// Bail if there isn't one.
@@ -171,7 +171,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		} else {
 
-			// It's the new group form.
+			// It's the New Group form.
 
 			// Add the field element to the form.
 			$form->add( 'checkbox', 'civicrm_groups_sync_create', __( 'Create Synced Group', 'civicrm-groups-sync' ) );
@@ -200,7 +200,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function form_group_create_process( $formName, &$form ) {
 
-		// Kick out if not group edit form.
+		// Kick out if not Edit Group form.
 		if ( ! ( $form instanceof CRM_Group_Form_Edit ) ) {
 			return;
 		}
@@ -223,17 +223,17 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Intercept when a CiviCRM group is about to be created.
+	 * Intercept when a CiviCRM Group is about to be created.
 	 *
-	 * We update the params by which the CiviCRM group is created if our form
+	 * We update the params by which the CiviCRM Group is created if our form
 	 * element has been checked.
 	 *
 	 * @since 0.1
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
-	 * @param array $civicrm_group The array of CiviCRM group data.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @param array $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_created_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
@@ -255,7 +255,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Always make the group of type "Access Control".
+		// Always make the Group of type "Access Control".
 		if ( isset( $civicrm_group['group_type'] ) && is_array( $civicrm_group['group_type'] ) ) {
 			$civicrm_group['group_type'][1] = 1;
 		} else {
@@ -271,16 +271,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Intercept after a CiviCRM group has been created.
+	 * Intercept after a CiviCRM Group has been created.
 	 *
-	 * We create the "Groups" group and update the "source" field for the
-	 * CiviCRM group with the ID of the "Groups" group.
+	 * We create the "Groups" Group and update the "source" field for the
+	 * CiviCRM Group with the ID of the "Groups" Group.
 	 *
 	 * @since 0.1
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
 	 * @param array $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_created_post( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
@@ -295,7 +295,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Make sure we have a group.
+		// Make sure we have a Group.
 		if ( ! ( $civicrm_group instanceof CRM_Contact_BAO_Group ) ) {
 			return;
 		}
@@ -316,7 +316,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Create a "Groups" group from CiviCRM group data.
+		// Create a "Groups" Group from CiviCRM Group data.
 		$wp_group_id = $this->plugin->wordpress->group_create_from_civicrm_group( $civicrm_group );
 
 		// Remove hooks.
@@ -352,7 +352,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Intercept when a CiviCRM group has been updated.
+	 * Intercept when a CiviCRM Group has been updated.
 	 *
 	 * There seems to be a bug in CiviCRM such that "source" is not included in
 	 * the $civicrm_group data that is passed to this callback. I assume it's
@@ -363,7 +363,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
 	 * @param array $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_updated( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
@@ -378,12 +378,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Make sure we have a group.
+		// Make sure we have a Group.
 		if ( ! ( $civicrm_group instanceof CRM_Contact_BAO_Group ) ) {
 			return;
 		}
 
-		// Get the full CiviCRM group.
+		// Get the full CiviCRM Group.
 		$civicrm_group_data = $this->group_get_by_id( $civicrm_group_id );
 		if ( empty( $civicrm_group_data ) ) {
 			return;
@@ -394,25 +394,25 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Bail if the "source" field is not for a synced group.
+		// Bail if the "source" field is not for a synced Group.
 		if ( false === strpos( $civicrm_group_data['source'], 'synced-group' ) ) {
 			return;
 		}
 
-		// Update the "Groups" group from CiviCRM group data.
+		// Update the "Groups" Group from CiviCRM Group data.
 		$wp_group_id = $this->plugin->wordpress->group_update_from_civicrm_group( $civicrm_group_data );
 
 	}
 
 	/**
-	 * Intercept a CiviCRM group prior to it being deleted.
+	 * Intercept a CiviCRM Group prior to it being deleted.
 	 *
 	 * @since 0.1
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
-	 * @param array $civicrm_group The array of CiviCRM group data.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @param array $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_deleted_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
@@ -431,12 +431,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get a CiviCRM group's admin URL.
+	 * Get a CiviCRM Group's admin URL.
 	 *
 	 * @since 0.1.1
 	 *
-	 * @param int $group_id The numeric ID of the CiviCRM group.
-	 * @return str $group_url The CiviCRM group's admin URL.
+	 * @param int $group_id The numeric ID of the CiviCRM Group.
+	 * @return str $group_url The CiviCRM Group's admin URL.
 	 */
 	public function group_get_url( $group_id ) {
 
@@ -445,16 +445,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return '';
 		}
 
-		// Get group URL.
+		// Get Group URL.
 		$group_url = CRM_Utils_System::url( 'civicrm/group', 'reset=1&action=update&id=' . $group_id );
 
 		/**
-		 * Filter the URL of the CiviCRM group's admin page.
+		 * Filter the URL of the CiviCRM Group's admin page.
 		 *
 		 * @since 0.1.1
 		 *
 		 * @param str $group_url The existing URL.
-		 * @param int $group_id The numeric ID of the CiviCRM group.
+		 * @param int $group_id The numeric ID of the CiviCRM Group.
 		 * @return str $group_url The modified URL.
 		 */
 		return apply_filters( 'civicrm_groups_sync_group_get_url_civi', $group_url, $group_id );
@@ -464,12 +464,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Gets a CiviCRM group by its ID.
+	 * Gets a CiviCRM Group by its ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The numeric ID of the group.
-	 * @return array|bool $group The array of CiviCRM group data, or false on failure.
+	 * @param int $group_id The numeric ID of the Group.
+	 * @return array|bool $group The array of CiviCRM Group data, or false on failure.
 	 */
 	public function group_get_by_id( $group_id ) {
 
@@ -503,18 +503,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// The result set should contain only one item.
 		$group = array_pop( $result['values'] );
 
-		// Return group.
+		// Return Group.
 		return $group;
 
 	}
 
 	/**
-	 * Get a CiviCRM group using a "Groups" group ID.
+	 * Get a CiviCRM Group using a "Groups" Group ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $wp_group_id The numeric ID of the "Groups" group.
-	 * @return array|bool $group The array of CiviCRM group data, or false on failure.
+	 * @param int $wp_group_id The numeric ID of the "Groups" Group.
+	 * @return array|bool $group The array of CiviCRM Group data, or false on failure.
 	 */
 	public function group_get_by_wp_id( $wp_group_id ) {
 
@@ -548,18 +548,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// The result set should contain only one item.
 		$group = array_pop( $result['values'] );
 
-		// Return group.
+		// Return Group.
 		return $group;
 
 	}
 
 	/**
-	 * Get the "Groups" group ID using a CiviCRM group ID.
+	 * Get the "Groups" Group ID using a CiviCRM Group ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The numeric ID of the CiviCRM group.
-	 * @return int|bool $wp_group_id The ID of the "Groups" group, or false on failure.
+	 * @param int $group_id The numeric ID of the CiviCRM Group.
+	 * @return int|bool $wp_group_id The ID of the "Groups" Group, or false on failure.
 	 */
 	public function group_get_wp_id_by_civicrm_id( $group_id ) {
 
@@ -602,18 +602,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$tmp = explode( 'synced-group-', $civicrm_group['source'] );
 		$wp_group_id = isset( $tmp[1] ) ? (int) trim( $tmp[1] ) : false;
 
-		// Return the ID of the "Groups" group.
+		// Return the ID of the "Groups" Group.
 		return $wp_group_id;
 
 	}
 
 	/**
-	 * Create a CiviCRM group using a "Groups" group object.
+	 * Create a CiviCRM Group using a "Groups" Group object.
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $wp_group The "Groups" group object.
-	 * @return int|bool $group_id The ID of the group, or false on failure.
+	 * @param object $wp_group The "Groups" Group object.
+	 * @return int|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_create_from_wp_group( $wp_group ) {
 
@@ -636,7 +636,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			'source' => 'synced-group-' . $wp_group->group_id,
 		];
 
-		// Create the synced CiviCRM group.
+		// Create the synced CiviCRM Group.
 		$result = civicrm_api( 'Group', 'create', $params );
 
 		// Reinstate hooks.
@@ -653,18 +653,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return false;
 		}
 
-		// Return new group ID.
+		// Return new Group ID.
 		return absint( $result['id'] );
 
 	}
 
 	/**
-	 * Update a CiviCRM group using a "Groups" group object.
+	 * Update a CiviCRM Group using a "Groups" Group object.
 	 *
 	 * @since 0.1
 	 *
-	 * @param object $wp_group The "Groups" group object.
-	 * @return int|bool $group_id The ID of the group, or false on failure.
+	 * @param object $wp_group The "Groups" Group object.
+	 * @return int|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_update_from_wp_group( $wp_group ) {
 
@@ -673,7 +673,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return false;
 		}
 
-		// Get the synced CiviCRM group.
+		// Get the synced CiviCRM Group.
 		$civicrm_group = $this->group_get_by_wp_id( $wp_group->group_id );
 
 		// Sanity check.
@@ -693,7 +693,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
 		];
 
-		// Update the synced CiviCRM group.
+		// Update the synced CiviCRM Group.
 		$result = civicrm_api( 'Group', 'create', $params );
 
 		// Reinstate hook.
@@ -716,16 +716,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Delete a CiviCRM group using a "Groups" group ID.
+	 * Delete a CiviCRM Group using a "Groups" Group ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $wp_group_id The numeric ID of the "Groups" group.
-	 * @return int|bool $group_id The ID of the group, or false on failure.
+	 * @param int $wp_group_id The numeric ID of the "Groups" Group.
+	 * @return int|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_delete_by_wp_id( $wp_group_id ) {
 
-		// Get the synced CiviCRM group.
+		// Get the synced CiviCRM Group.
 		$civicrm_group = $this->group_get_by_wp_id( $wp_group_id );
 
 		// Sanity check.
@@ -739,7 +739,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			'id' => $civicrm_group['id'],
 		];
 
-		// Delete the synced CiviCRM group.
+		// Delete the synced CiviCRM Group.
 		$result = civicrm_api( 'Group', 'delete', $params );
 
 		// Add log entry on failure.
@@ -761,13 +761,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Add a CiviCRM contact to a CiviCRM group.
+	 * Add a CiviCRM Contact to a CiviCRM Group.
 	 *
 	 * @since 0.1
 	 *
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
-	 * @param array $civicrm_contact_id The numeric ID of a CiviCRM contact.
-	 * @return array|bool $result The group-contact data, or false on failure.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @param array $civicrm_contact_id The numeric ID of a CiviCRM Contact.
+	 * @return array|bool $result The array of GroupContact data, or false on failure.
 	 */
 	public function group_contact_create( $civicrm_group_id, $civicrm_contact_id ) {
 
@@ -805,13 +805,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Delete a CiviCRM contact from a CiviCRM group.
+	 * Delete a CiviCRM Contact from a CiviCRM Group.
 	 *
 	 * @since 0.1
 	 *
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
-	 * @param array $civicrm_contact_id The numeric ID of a CiviCRM contact.
-	 * @return array|bool $result The group-contact data, or false on failure.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @param array $civicrm_contact_id The numeric ID of a CiviCRM Contact.
+	 * @return array|bool $result The array of GroupContact data, or false on failure.
 	 */
 	public function group_contact_delete( $civicrm_group_id, $civicrm_contact_id ) {
 
@@ -851,13 +851,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Intercept when a CiviCRM contact is added to a group.
+	 * Intercept when a CiviCRM Contact is added to a Group.
 	 *
 	 * @since 0.1
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
 	 * @param array $contact_ids The array of CiviCRM Contact IDs.
 	 */
 	public function group_contacts_added( $op, $object_name, $civicrm_group_id, $contact_ids ) {
@@ -872,7 +872,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Get "Groups" group ID.
+		// Get "Groups" Group ID.
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
 
 		// Sanity check.
@@ -880,14 +880,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Loop through added contacts.
+		// Loop through added Contacts.
 		if ( count( $contact_ids ) > 0 ) {
 			foreach ( $contact_ids as $contact_id ) {
 
-				// Get WordPress user ID.
+				// Get WordPress User ID.
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
 
-				// Add user to "Groups" group.
+				// Add User to "Groups" Group.
 				if ( $user_id !== false ) {
 					$this->plugin->wordpress->group_member_add( $user_id, $wp_group_id );
 				}
@@ -898,13 +898,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Intercept when a CiviCRM contact is deleted (or removed) from a group.
+	 * Intercept when a CiviCRM Contact is deleted (or removed) from a Group.
 	 *
 	 * @since 0.1
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
 	 * @param array $contact_ids Array of CiviCRM Contact IDs.
 	 */
 	public function group_contacts_deleted( $op, $object_name, $civicrm_group_id, $contact_ids ) {
@@ -919,7 +919,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Get "Groups" group ID.
+		// Get "Groups" Group ID.
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
 
 		// Sanity check.
@@ -927,14 +927,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Loop through deleted contacts.
+		// Loop through deleted Contacts.
 		if ( count( $contact_ids ) > 0 ) {
 			foreach ( $contact_ids as $contact_id ) {
 
-				// Get WordPress user ID.
+				// Get WordPress User ID.
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
 
-				// Delete user from "Groups" group.
+				// Delete User from "Groups" Group.
 				if ( $user_id !== false ) {
 					$this->plugin->wordpress->group_member_delete( $user_id, $wp_group_id );
 				}
@@ -945,17 +945,17 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Intercept when a CiviCRM contact is re-added to a group.
+	 * Intercept when a CiviCRM Contact is re-added to a Group.
 	 *
 	 * The issue here is that CiviCRM fires 'civicrm_pre' with $op = 'delete' regardless
-	 * of whether the contact is being removed or deleted. If a contact is later re-added
-	 * to the group, then $op != 'create', so we need to intercept $op = 'edit'.
+	 * of whether the Contact is being removed or deleted. If a Contact is later re-added
+	 * to the Group, then $op != 'create', so we need to intercept $op = 'edit'.
 	 *
 	 * @since 0.1
 	 *
 	 * @param string $op The type of database operation.
 	 * @param string $object_name The type of object.
-	 * @param integer $civicrm_group_id The ID of the CiviCRM group.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
 	 * @param array $contact_ids Array of CiviCRM Contact IDs.
 	 */
 	public function group_contacts_rejoined( $op, $object_name, $civicrm_group_id, $contact_ids ) {
@@ -970,7 +970,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Get "Groups" group ID.
+		// Get "Groups" Group ID.
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
 
 		// Sanity check.
@@ -978,14 +978,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Loop through added contacts.
+		// Loop through added Contacts.
 		if ( count( $contact_ids ) > 0 ) {
 			foreach ( $contact_ids as $contact_id ) {
 
-				// Get WordPress user ID.
+				// Get WordPress User ID.
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
 
-				// Add user to "Groups" group.
+				// Add User to "Groups" Group.
 				if ( $user_id !== false ) {
 					$this->plugin->wordpress->group_member_add( $user_id, $wp_group_id );
 				}
@@ -998,12 +998,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get a CiviCRM contact ID for a given WordPress user ID.
+	 * Get a CiviCRM Contact ID for a given WordPress User ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The numeric WordPress user ID.
-	 * @return int|bool $contact_id The CiviCRM contact ID, or false on failure.
+	 * @param int $user_id The numeric WordPress User ID.
+	 * @return int|bool $contact_id The CiviCRM Contact ID, or false on failure.
 	 */
 	public function contact_id_get_by_user_id( $user_id ) {
 
@@ -1018,22 +1018,22 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Search using CiviCRM's logic.
 		$contact_id = CRM_Core_BAO_UFMatch::getContactId( $user_id );
 
-		// Cast contact ID as boolean if we didn't get one.
+		// Cast Contact ID as boolean if we didn't get one.
 		if ( empty( $contact_id ) ) {
 			$contact_id = false;
 		}
 
 		/**
-		 * Filter the result of the CiviCRM contact lookup.
+		 * Filter the result of the CiviCRM Contact lookup.
 		 *
-		 * You can use this filter to create a CiviCRM contact if none is found.
-		 * Return the new CiviCRM contact ID and the group linkage will be made.
+		 * You can use this filter to create a CiviCRM Contact if none is found.
+		 * Return the new CiviCRM Contact ID and the Group linkage will be made.
 		 *
 		 * @since 0.1
 		 *
-		 * @param int|bool $contact_id The numeric ID of the CiviCRM contact, or false on failure.
-		 * @param int $user_id The numeric ID of the WordPress user.
-		 * @return int|bool $contact_id The numeric ID of the CiviCRM contact, or false on failure.
+		 * @param int|bool $contact_id The numeric ID of the CiviCRM Contact, or false on failure.
+		 * @param int $user_id The numeric ID of the WordPress User.
+		 * @return int|bool $contact_id The numeric ID of the CiviCRM Contact, or false on failure.
 		 */
 		$contact_id = apply_filters( 'civicrm_groups_sync_contact_id_get_by_user_id', $contact_id, $user_id );
 
@@ -1043,19 +1043,19 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	}
 
 	/**
-	 * Get a CiviCRM contact for a given WordPress user ID.
+	 * Get a CiviCRM Contact for a given WordPress User ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The numeric WordPress user ID.
-	 * @return array|bool $contact The CiviCRM contact data, or false on failure.
+	 * @param int $user_id The numeric WordPress User ID.
+	 * @return array|bool $contact The CiviCRM Contact data, or false on failure.
 	 */
 	public function contact_get_by_user_id( $user_id ) {
 
 		// Init return.
 		$contact = false;
 
-		// Get the contact ID.
+		// Get the Contact ID.
 		$contact_id = $this->contact_id_get_by_user_id( $user_id );
 		if ( empty( $contact_id ) ) {
 			return $contact;

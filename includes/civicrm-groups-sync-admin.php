@@ -200,7 +200,7 @@ class CiviCRM_Groups_Sync_Admin {
 		 */
 		$capability = apply_filters( 'civicrm_groups_sync_page_settings_cap', 'manage_options' );
 
-		// Check user permissions.
+		// Check User permissions.
 		if ( ! current_user_can( $capability ) ) {
 			return;
 		}
@@ -375,7 +375,7 @@ class CiviCRM_Groups_Sync_Admin {
 		 */
 		$capability = apply_filters( 'civicrm_groups_sync_page_settings_cap', 'manage_options' );
 
-		// Check user permissions.
+		// Check User permissions.
 		if ( ! current_user_can( $capability ) ) {
 			return;
 		}

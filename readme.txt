@@ -8,25 +8,25 @@ Stable tag: 0.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the Groups plugin.
+CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in Groups provided by the Groups plugin.
 
 
 
 == Description ==
 
-CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the [Groups plugin](https://wordpress.org/plugins/groups/).
+CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in Groups provided by the [Groups plugin](https://wordpress.org/plugins/groups/).
 
 ### Requirements
 
 This plugin requires a minimum of *WordPress 4.9*, *Groups 2.5* and *CiviCRM 5.8*.
 
-### WordPress users
+### WordPress Users
 
-By default, this plugin does not create a WordPress user when a CiviCRM contact is added to a CiviCRM group which is synced to a Groups group. If you wish to do so, use a callback from the `civicrm_groups_sync_user_id_get_by_contact_id` filter to create a new WordPress user and return the user ID.
+By default, this plugin does not create a WordPress User when a CiviCRM Contact is added to a CiviCRM Group which is synced to a *Groups* Group. If you wish to do so, use a callback from the `civicrm_groups_sync_user_id_get_by_contact_id` filter to create a new WordPress User and return the User ID.
 
-### CiviCRM contacts
+### CiviCRM Contacts
 
-By default, this plugin does not create a CiviCRM contact when a WordPress user is added to a Groups group which is synced to a CiviCRM group. If you wish to do so, use a callback from the `civicrm_groups_sync_contact_id_get_by_user_id` filter to create a new CiviCRM contact and return the contact ID.
+By default, this plugin does not create a CiviCRM Contact when a WordPress User is added to a *Groups* Group which is synced to a CiviCRM Group. If you wish to do so, use a callback from the `civicrm_groups_sync_contact_id_get_by_user_id` filter to create a new CiviCRM Contact and return the Contact ID.
 
 ### BuddyPress compatibility
 
@@ -55,7 +55,7 @@ This plugin is in active development. For feature requests and bug reports (or i
 
 = 0.1.1 =
 
-Create two-way links between CiviCRM and WordPress groups
+Create two-way links between CiviCRM and WordPress Groups
 
 
 = 0.1 =

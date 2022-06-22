@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CiviCRM Groups Sync
  * Plugin URI: https://develop.tadpole.cc/plugins/civicrm-groups-sync
- * Description: Keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the Groups plugin.
+ * Description: Keeps Contacts in CiviCRM Groups in sync with WordPress Users in Groups provided by the Groups plugin.
  * Author: Christian Wach
  * Version: 0.1.2
  * Author URI: http://haystack.co.uk
