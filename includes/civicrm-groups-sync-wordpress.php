@@ -540,7 +540,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	public function form_submitted( $group_id ) {
 
 		/*
-		$e = new Exception;
+		$e = new Exception();
 		$trace = $e->getTraceAsString();
 		error_log( print_r( array(
 			'method' => __METHOD__,

@@ -251,7 +251,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		if ( ! isset( $civicrm_group['civicrm_groups_sync_create'] ) ) {
 			return;
 		}
-		if ( $civicrm_group['civicrm_groups_sync_create'] != '1' ) {
+		if ( 1 !== (int) $civicrm_group['civicrm_groups_sync_create'] ) {
 			return;
 		}
 
@@ -312,7 +312,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		if ( ! isset( $civicrm_group->source ) ) {
 			return;
 		}
-		if ( $civicrm_group->source != 'synced-group' ) {
+		if ( 'synced-group' !== $civicrm_group->source ) {
 			return;
 		}
 
@@ -323,12 +323,15 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		remove_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10 );
 		remove_action( 'civicrm_post', [ $this, 'group_created_post' ], 10 );
 
-		// Update the "source" field to include the ID of the WordPress Group.
-		$result = civicrm_api( 'Group', 'create', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $civicrm_group->id,
 			'source' => 'synced-group-' . $wp_group_id,
-		] );
+		];
+
+		// Update the "source" field to include the ID of the WordPress Group.
+		$result = civicrm_api( 'Group', 'create', $params );
 
 		// Reinstate hooks.
 		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
@@ -380,11 +383,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Get the full CiviCRM group.
-		$civicrm_group_data = civicrm_api( 'Group', 'getsingle', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $civicrm_group_id,
-		] );
+		];
+
+		// Get the full CiviCRM group.
+		$civicrm_group_data = civicrm_api( 'Group', 'getsingle', $params );
 
 		// Bail on failure.
 		if ( isset( $civicrm_group_data['is_error'] ) && $civicrm_group_data['is_error'] == '1' ) {
@@ -475,11 +481,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function group_get_by_id( $group_id ) {
 
-		// Get the CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $group_id,
-		] );
+		];
+
+		// Get the CiviCRM group.
+		$civicrm_group = civicrm_api( 'Group', 'getsingle', $params );
 
 		// Bail on failure.
 		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
@@ -501,11 +510,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function group_get_by_wp_id( $wp_group_id ) {
 
-		// Get the synced CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'source' => 'synced-group-' . $wp_group_id,
-		] );
+		];
+
+		// Get the synced CiviCRM group.
+		$civicrm_group = civicrm_api( 'Group', 'getsingle', $params );
 
 		// Bail on failure.
 		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
@@ -527,11 +539,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function group_get_wp_id_by_civicrm_id( $group_id ) {
 
-		// Get the synced CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $group_id,
-		] );
+		];
+
+		// Get the synced CiviCRM group.
+		$civicrm_group = civicrm_api( 'Group', 'getsingle', $params );
 
 		// Bail on failure.
 		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
@@ -571,15 +586,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		remove_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10 );
 		remove_action( 'civicrm_post', [ $this, 'group_created_post' ], 10 );
 
-		// Create the synced CiviCRM group.
-		$result = civicrm_api( 'Group', 'create', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'name' => wp_unslash( $wp_group->name ),
 			'title' => wp_unslash( $wp_group->name ),
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
 			'group_type' => [ 1 => 1 ],
 			'source' => 'synced-group-' . $wp_group->group_id,
-		] );
+		];
+
+		// Create the synced CiviCRM group.
+		$result = civicrm_api( 'Group', 'create', $params );
 
 		// Reinstate hooks.
 		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
@@ -626,14 +644,17 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Remove hook.
 		remove_action( 'civicrm_post', [ $this, 'group_updated' ], 10 );
 
-		// Update the synced CiviCRM group.
-		$result = civicrm_api( 'Group', 'create', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $civicrm_group['id'],
 			'name' => wp_unslash( $wp_group->name ),
 			'title' => wp_unslash( $wp_group->name ),
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
-		] );
+		];
+
+		// Update the synced CiviCRM group.
+		$result = civicrm_api( 'Group', 'create', $params );
 
 		// Reinstate hook.
 		add_action( 'civicrm_post', [ $this, 'group_updated' ], 10, 4 );
@@ -672,11 +693,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return false;
 		}
 
-		// Delete the synced CiviCRM group.
-		$result = civicrm_api( 'Group', 'delete', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $civicrm_group['id'],
-		] );
+		];
+
+		// Delete the synced CiviCRM group.
+		$result = civicrm_api( 'Group', 'delete', $params );
 
 		// Add log entry on failure.
 		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
@@ -710,13 +734,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Remove hook.
 		remove_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10 );
 
-		// Call API.
-		$result = civicrm_api( 'GroupContact', 'create', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'group_id' => $civicrm_group_id,
 			'contact_id' => $civicrm_contact_id,
 			'status' => 'Added',
-		] );
+		];
+
+		// Call API.
+		$result = civicrm_api( 'GroupContact', 'create', $params );
 
 		// Reinstate hook.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10, 4 );
@@ -751,13 +778,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Remove hook.
 		remove_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10 );
 
-		// Call API.
-		$result = civicrm_api( 'GroupContact', 'create', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'group_id' => $civicrm_group_id,
 			'contact_id' => $civicrm_contact_id,
 			'status' => 'Removed',
-		] );
+		];
+
+		// Call API.
+		$result = civicrm_api( 'GroupContact', 'create', $params );
 
 		// Reinstate hooks.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10, 4 );
@@ -990,11 +1020,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return false;
 		}
 
-		// Get domain org info.
-		$contact = civicrm_api( 'contact', 'getsingle', [
+		// Init params.
+		$params = [
 			'version' => 3,
 			'id' => $contact_id,
-		] );
+		];
+
+		// Call the API.
+		$contact = civicrm_api( 'contact', 'getsingle', $params );
 
 		// Bail if there's an error.
 		if ( ! empty( $contact['is_error'] ) && $contact['is_error'] == 1 ) {
