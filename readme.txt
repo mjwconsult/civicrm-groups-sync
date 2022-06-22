@@ -53,10 +53,14 @@ This plugin is in active development. For feature requests and bug reports (or i
 
 == Changelog ==
 
+= 0.1.2 =
+
+* Do not add users to "Groups" groups if they are already members
+* Make sure synced CiviCRM Groups are always "Access Control"
+
 = 0.1.1 =
 
 Create two-way links between CiviCRM and WordPress Groups
-
 
 = 0.1 =
 
