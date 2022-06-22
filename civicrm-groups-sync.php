@@ -81,13 +81,55 @@ class CiviCRM_Groups_Sync {
 	 */
 	public function __construct() {
 
-		// Initialise.
-		add_action( 'plugins_loaded', [ $this, 'initialise' ] );
+		// Bail if dependencies fail.
+		if ( ! $this->dependencies() ) {
+			return;
+		}
+
+		// Initialise this plugin.
+		$this->initialise();
+
+		/**
+		 * Broadcast that this plugin is now loaded.
+		 *
+		 * @since 0.1
+		 */
+		do_action( 'civicrm_groups_sync_loaded' );
 
 	}
 
 	/**
-	 * Do stuff on plugin init.
+	 * Checks the dependencies for this plugin.
+	 *
+	 * @since 0.1.2
+	 */
+	public function dependencies() {
+
+		// Init only when CiviCRM is fully installed.
+		if ( ! defined( 'CIVICRM_INSTALLED' ) ) {
+			return false;
+		}
+		if ( ! CIVICRM_INSTALLED ) {
+			return false;
+		}
+
+		// Bail if CiviCRM plugin is not present.
+		if ( ! function_exists( 'civi_wp' ) ) {
+			return false;
+		}
+
+		// Bail if we don't have the "Groups" plugin.
+		if ( ! defined( 'GROUPS_CORE_VERSION' ) ) {
+			return false;
+		}
+
+		// We're good.
+		return true;
+
+	}
+
+	/**
+	 * Initialises the plugin.
 	 *
 	 * @since 0.1
 	 */
@@ -99,42 +141,11 @@ class CiviCRM_Groups_Sync {
 			return;
 		}
 
-		// Enable translation.
+		// Bootstrap plugin.
 		$this->enable_translation();
-
-		// Init only when CiviCRM is fully installed.
-		if ( ! defined( 'CIVICRM_INSTALLED' ) ) {
-			return;
-		}
-		if ( ! CIVICRM_INSTALLED ) {
-			return;
-		}
-
-		// Bail if CiviCRM plugin is not present.
-		if ( ! function_exists( 'civi_wp' ) ) {
-			return;
-		}
-
-		// Bail if we don't have the "Groups" plugin.
-		if ( ! defined( 'GROUPS_CORE_VERSION' ) ) {
-			return;
-		}
-
-		// Include files.
 		$this->include_files();
-
-		// Set up objects and references.
 		$this->setup_objects();
-
-		// Finally, register hooks.
 		$this->register_hooks();
-
-		/**
-		 * Broadcast that this plugin is now loaded.
-		 *
-		 * @since 0.1
-		 */
-		do_action( 'civicrm_groups_sync_loaded' );
 
 		// We're done.
 		$done = true;
@@ -142,7 +153,7 @@ class CiviCRM_Groups_Sync {
 	}
 
 	/**
-	 * Include files.
+	 * Includes files.
 	 *
 	 * @since 0.1
 	 */
@@ -156,7 +167,7 @@ class CiviCRM_Groups_Sync {
 	}
 
 	/**
-	 * Set up this plugin's objects.
+	 * Sets up this plugin's objects.
 	 *
 	 * @since 0.1
 	 */
@@ -170,7 +181,7 @@ class CiviCRM_Groups_Sync {
 	}
 
 	/**
-	 * Register hooks.
+	 * Registers hooks.
 	 *
 	 * @since 0.1
 	 */
@@ -181,7 +192,7 @@ class CiviCRM_Groups_Sync {
 	}
 
 	/**
-	 * Load translation files.
+	 * Loads translation files.
 	 *
 	 * @since 0.1
 	 */
@@ -200,7 +211,7 @@ class CiviCRM_Groups_Sync {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Check if this plugin is network activated.
+	 * Checks if this plugin is network activated.
 	 *
 	 * @since 0.1
 	 *
@@ -239,13 +250,18 @@ class CiviCRM_Groups_Sync {
 	}
 
 	/**
-	 * Check if CiviCRM is initialised.
+	 * Checks if CiviCRM is initialised.
 	 *
 	 * @since 0.1
 	 *
 	 * @return bool True if CiviCRM initialised, false otherwise.
 	 */
 	public function is_civicrm_initialised() {
+
+		// Bail if CiviCRM is not fully installed.
+		if ( ! defined( 'CIVICRM_INSTALLED' ) || ! CIVICRM_INSTALLED ) {
+			return false;
+		}
 
 		// Bail if no CiviCRM init function.
 		if ( ! function_exists( 'civi_wp' ) ) {
@@ -283,8 +299,8 @@ function civicrm_groups_sync() {
 
 }
 
-// Initialise plugin now.
-civicrm_groups_sync();
+// Initialise plugin when plugins have loaded.
+add_action( 'plugins_loaded', 'civicrm_groups_sync' );
 
 /*
  * Uninstall uses the 'uninstall.php' method.
@@ -306,10 +322,7 @@ civicrm_groups_sync();
 function civicrm_groups_sync_action_links( $links, $file ) {
 
 	// Add links only when CiviCRM is fully installed.
-	if ( ! defined( 'CIVICRM_INSTALLED' ) ) {
-		return $links;
-	}
-	if ( ! CIVICRM_INSTALLED ) {
+	if ( ! defined( 'CIVICRM_INSTALLED' ) || ! CIVICRM_INSTALLED ) {
 		return $links;
 	}
 
