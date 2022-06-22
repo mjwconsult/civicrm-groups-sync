@@ -78,7 +78,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
 		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
-		// Intercept after CiviCRM updated a Group.
+		// Intercept before and after CiviCRM updated a Group.
+		add_action( 'civicrm_pre', [ $this, 'group_updated_pre' ], 10, 4 );
 		add_action( 'civicrm_post', [ $this, 'group_updated' ], 10, 4 );
 
 		// Intercept CiviCRM's add Contacts to Group.
@@ -347,6 +348,55 @@ class CiviCRM_Groups_Sync_CiviCRM {
 				'objectRef' => $civicrm_group,
 				'result' => $result,
 			], true ) );
+		}
+
+	}
+
+	/**
+	 * Intercept when a CiviCRM Group is about to be updated.
+	 *
+	 * We need to make sure that the CiviCRM Group remains of type "Access Control".
+	 *
+	 * @since 0.1.2
+	 *
+	 * @param string $op The type of database operation.
+	 * @param string $object_name The type of object.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @param array $civicrm_group The array of CiviCRM Group data.
+	 */
+	public function group_updated_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
+
+		// Target our operation.
+		if ( $op != 'edit' ) {
+			return;
+		}
+
+		// Target our object type.
+		if ( $object_name != 'Group' ) {
+			return;
+		}
+
+		// Get the full CiviCRM Group.
+		$civicrm_group_data = $this->group_get_by_id( $civicrm_group_id );
+		if ( empty( $civicrm_group_data ) ) {
+			return;
+		}
+
+		// Bail if the "source" field is not set.
+		if ( empty( $civicrm_group_data['source'] ) ) {
+			return;
+		}
+
+		// Bail if the "source" field is not for a synced Group.
+		if ( false === strpos( $civicrm_group_data['source'], 'synced-group' ) ) {
+			return;
+		}
+
+		// Always make the Group of type "Access Control".
+		if ( isset( $civicrm_group['group_type'] ) && is_array( $civicrm_group['group_type'] ) ) {
+			$civicrm_group['group_type'][1] = 1;
+		} else {
+			$civicrm_group['group_type'] = [ 1 => 1 ];
 		}
 
 	}
