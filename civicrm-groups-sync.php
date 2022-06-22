@@ -36,6 +36,11 @@ if ( ! defined( 'CIVICRM_GROUPS_SYNC_PATH' ) ) {
 	define( 'CIVICRM_GROUPS_SYNC_PATH', plugin_dir_path( CIVICRM_GROUPS_SYNC_FILE ) );
 }
 
+// Set debug flag.
+if ( ! defined( 'CIVICRM_GROUPS_SYNC_DEBUG' ) ) {
+	define( 'WPCV_TAX_FIELD_SYNC_DEBUG', false );
+}
+
 
 
 /**
@@ -270,6 +275,35 @@ class CiviCRM_Groups_Sync {
 
 		// Try and initialise CiviCRM.
 		return civi_wp()->initialize();
+
+	}
+
+	/**
+	 * Write to the error log.
+	 *
+	 * @since 0.1.2
+	 *
+	 * @param array $data The data to write to the log file.
+	 */
+	public function log_error( $data = [] ) {
+
+		// Skip if not debugging.
+		if ( WPCV_TAX_FIELD_SYNC_DEBUG === false ) {
+			return;
+		}
+
+		// Skip if empty.
+		if ( empty( $data ) ) {
+			return;
+		}
+
+		// Format data.
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
+		$error = print_r( $data, true );
+
+		// Write to log file.
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		error_log( $error );
 
 	}
 

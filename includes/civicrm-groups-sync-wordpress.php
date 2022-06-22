@@ -585,13 +585,13 @@ class CiviCRM_Groups_Sync_WordPress {
 		if ( ! $success ) {
 			$e = new Exception();
 			$trace = $e->getTraceAsString();
-			error_log( print_r( [
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
 				'message' => __( 'Could not add User to Group.', 'civicrm-groups-sync' ),
 				'user_id' => $user_id,
 				'group_id' => $group_id,
 				'backtrace' => $trace,
-			], true ) );
+			] );
 		}
 
 		// --<
@@ -628,13 +628,13 @@ class CiviCRM_Groups_Sync_WordPress {
 		if ( ! $success ) {
 			$e = new Exception();
 			$trace = $e->getTraceAsString();
-			error_log( print_r( [
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
 				'message' => __( 'Could not delete User from Group.', 'civicrm-groups-sync' ),
 				'user_id' => $user_id,
 				'group_id' => $group_id,
 				'backtrace' => $trace,
-			], true ) );
+			] );
 		}
 
 		// --<

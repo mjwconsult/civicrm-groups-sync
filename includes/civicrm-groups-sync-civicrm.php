@@ -338,16 +338,20 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
 		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
-		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
-			error_log( print_r( [
+		// Log error on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
 				'op' => $op,
 				'object_name' => $object_name,
 				'objectId' => $civicrm_group_id,
 				'objectRef' => $civicrm_group,
+				'params' => $params,
 				'result' => $result,
-			], true ) );
+				'backtrace' => $trace,
+			] );
 		}
 
 	}
@@ -693,13 +697,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
 		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
-		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
-			error_log( print_r( [
+		// Log error and bail on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
-				'wp_group' => $wp_group,
+				'params' => $params,
 				'result' => $result,
-			], true ) );
+				'backtrace' => $trace,
+			] );
 			return false;
 		}
 
@@ -749,14 +756,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Reinstate hook.
 		add_action( 'civicrm_post', [ $this, 'group_updated' ], 10, 4 );
 
-		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
-			error_log( print_r( [
+		// Log error and bail on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
-				'wp_group' => $wp_group,
-				'civicrm_group' => $civicrm_group,
+				'params' => $params,
 				'result' => $result,
-			], true ) );
+				'backtrace' => $trace,
+			] );
 			return false;
 		}
 
@@ -792,14 +801,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Delete the synced CiviCRM Group.
 		$result = civicrm_api( 'Group', 'delete', $params );
 
-		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
-			error_log( print_r( [
+		// Log error and bail on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
 				'wp_group_id' => $wp_group_id,
 				'civicrm_group' => $civicrm_group,
+				'params' => $params,
 				'result' => $result,
-			], true ) );
+				'backtrace' => $trace,
+			] );
 			return false;
 		}
 
@@ -838,14 +851,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Reinstate hook.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10, 4 );
 
-		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
-			error_log( print_r( [
+		// Log error and bail on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
-				'civicrm_group_id' => $civicrm_group_id,
-				'civicrm_contact_id' => $civicrm_contact_id,
+				'params' => $params,
 				'result' => $result,
-			], true ) );
+				'backtrace' => $trace,
+			] );
 			return false;
 		}
 
@@ -882,14 +897,16 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Reinstate hooks.
 		add_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10, 4 );
 
-		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
-			error_log( print_r( [
+		// Log error and bail on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			$e = new \Exception();
+			$trace = $e->getTraceAsString();
+			$this->plugin->log_error( [
 				'method' => __METHOD__,
-				'civicrm_group_id' => $civicrm_group_id,
-				'civicrm_contact_id' => $civicrm_contact_id,
+				'params' => $params,
 				'result' => $result,
-			], true ) );
+				'backtrace' => $trace,
+			] );
 			return false;
 		}
 
