@@ -383,22 +383,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			return;
 		}
 
-		// Init params.
-		$params = [
-			'version' => 3,
-			'id' => $civicrm_group_id,
-		];
-
 		// Get the full CiviCRM group.
-		$civicrm_group_data = civicrm_api( 'Group', 'getsingle', $params );
-
-		// Bail on failure.
-		if ( isset( $civicrm_group_data['is_error'] ) && $civicrm_group_data['is_error'] == '1' ) {
+		$civicrm_group_data = $this->group_get_by_id( $civicrm_group_id );
+		if ( empty( $civicrm_group_data ) ) {
 			return;
 		}
 
 		// Bail if the "source" field is not set.
-		if ( ! isset( $civicrm_group_data['source'] ) ) {
+		if ( empty( $civicrm_group_data['source'] ) ) {
 			return;
 		}
 
@@ -472,14 +464,22 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get a CiviCRM group by its ID.
+	 * Gets a CiviCRM group by its ID.
 	 *
 	 * @since 0.1
 	 *
 	 * @param int $group_id The numeric ID of the group.
-	 * @return array|bool $civicrm_group The CiviCRM group data array, or false on failure.
+	 * @return array|bool $group The array of CiviCRM group data, or false on failure.
 	 */
 	public function group_get_by_id( $group_id ) {
+
+		// Init return.
+		$group = false;
+
+		// Try and init CiviCRM.
+		if ( ! $this->plugin->is_civicrm_initialised() ) {
+			return $group;
+		}
 
 		// Init params.
 		$params = [
@@ -487,16 +487,24 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			'id' => $group_id,
 		];
 
-		// Get the CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', $params );
+		// Call the CiviCRM API.
+		$result = civicrm_api( 'Group', 'get', $params );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
-			return false;
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			return $group;
 		}
 
+		// Bail if there are no results.
+		if ( empty( $result['values'] ) ) {
+			return $group;
+		}
+
+		// The result set should contain only one item.
+		$group = array_pop( $result['values'] );
+
 		// Return group.
-		return $civicrm_group;
+		return $group;
 
 	}
 
@@ -506,9 +514,17 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 * @since 0.1
 	 *
 	 * @param int $wp_group_id The numeric ID of the "Groups" group.
-	 * @return array|bool $civicrm_group The CiviCRM group data array, or false on failure.
+	 * @return array|bool $group The array of CiviCRM group data, or false on failure.
 	 */
 	public function group_get_by_wp_id( $wp_group_id ) {
+
+		// Init return.
+		$group = false;
+
+		// Try and init CiviCRM.
+		if ( ! $this->plugin->is_civicrm_initialised() ) {
+			return $group;
+		}
 
 		// Init params.
 		$params = [
@@ -516,16 +532,24 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			'source' => 'synced-group-' . $wp_group_id,
 		];
 
-		// Get the synced CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', $params );
+		// Call the CiviCRM API.
+		$result = civicrm_api( 'Group', 'get', $params );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
-			return false;
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			return $group;
 		}
 
+		// Bail if there are no results.
+		if ( empty( $result['values'] ) ) {
+			return $group;
+		}
+
+		// The result set should contain only one item.
+		$group = array_pop( $result['values'] );
+
 		// Return group.
-		return $civicrm_group;
+		return $group;
 
 	}
 
@@ -539,28 +563,44 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function group_get_wp_id_by_civicrm_id( $group_id ) {
 
+		// Init return.
+		$wp_group_id = false;
+
+		// Try and init CiviCRM.
+		if ( ! $this->plugin->is_civicrm_initialised() ) {
+			return $wp_group_id;
+		}
+
 		// Init params.
 		$params = [
 			'version' => 3,
 			'id' => $group_id,
 		];
 
-		// Get the synced CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', $params );
+		// Call the CiviCRM API.
+		$result = civicrm_api( 'Group', 'get', $params );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
-			return false;
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			return $wp_group_id;
 		}
+
+		// Bail if there are no results.
+		if ( empty( $result['values'] ) ) {
+			return $wp_group_id;
+		}
+
+		// The result set should contain only one item.
+		$civicrm_group = array_pop( $result['values'] );
 
 		// Bail if there's no "source" field.
 		if ( empty( $civicrm_group['source'] ) ) {
-			return false;
+			return $wp_group_id;
 		}
 
 		// Get ID from source string.
 		$tmp = explode( 'synced-group-', $civicrm_group['source'] );
-		$wp_group_id = isset( $tmp[1] ) ? absint( trim( $tmp[1] ) ) : false;
+		$wp_group_id = isset( $tmp[1] ) ? (int) trim( $tmp[1] ) : false;
 
 		// Return the ID of the "Groups" group.
 		return $wp_group_id;
@@ -1012,12 +1052,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function contact_get_by_user_id( $user_id ) {
 
+		// Init return.
+		$contact = false;
+
 		// Get the contact ID.
 		$contact_id = $this->contact_id_get_by_user_id( $user_id );
-
-		// Bail if we didn't get one.
 		if ( empty( $contact_id ) ) {
-			return false;
+			return $contact;
+		}
+
+		// Try and init CiviCRM.
+		if ( ! $this->plugin->is_civicrm_initialised() ) {
+			return $contact;
 		}
 
 		// Init params.
@@ -1026,13 +1072,21 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			'id' => $contact_id,
 		];
 
-		// Call the API.
-		$contact = civicrm_api( 'contact', 'getsingle', $params );
+		// Call the CiviCRM API.
+		$result = civicrm_api( 'Contact', 'get', $params );
 
-		// Bail if there's an error.
-		if ( ! empty( $contact['is_error'] ) && $contact['is_error'] == 1 ) {
-			return false;
+		// Bail on failure.
+		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
+			return $contact;
 		}
+
+		// Bail if there are no results.
+		if ( empty( $result['values'] ) ) {
+			return $contact;
+		}
+
+		// The result set should contain only one item.
+		$contact = array_pop( $result['values'] );
 
 		// --<
 		return $contact;
