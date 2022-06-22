@@ -14,7 +14,7 @@ CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress User
 
 == Description ==
 
-CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in Groups provided by the [Groups plugin](https://wordpress.org/plugins/groups/).
+CiviCRM Groups Sync keeps Contacts in CiviCRM Groups in sync with WordPress Users in Groups provided by the [Groups](https://wordpress.org/plugins/groups/) plugin.
 
 ### Requirements
 
