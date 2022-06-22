@@ -1,7 +1,18 @@
 <?php
+/**
+ * WordPress class.
+ *
+ * Handles WordPress-related functionality.
+ *
+ * @package CiviCRM_Groups_Sync
+ * @since 0.1
+ */
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 /**
- * CiviCRM Groups Sync WordPress Class.
+ * WordPress Class.
  *
  * A class that encapsulates functionality for interacting with the "Groups"
  * plugin in WordPress.
@@ -19,8 +30,6 @@ class CiviCRM_Groups_Sync_WordPress {
 	 */
 	public $plugin;
 
-
-
 	/**
 	 * Class constructor.
 	 *
@@ -30,19 +39,13 @@ class CiviCRM_Groups_Sync_WordPress {
 	 */
 	public function __construct( $plugin ) {
 
-		// store reference to plugin
+		// Store reference to plugin.
 		$this->plugin = $plugin;
 
 		// Add action for init.
-		add_action( 'civicrm_groups_sync_loaded', array( $this, 'initialise' ) );
+		add_action( 'civicrm_groups_sync_loaded', [ $this, 'initialise' ] );
 
 	}
-
-
-
-	//##########################################################################
-
-
 
 	/**
 	 * Initialise this object.
@@ -56,8 +59,6 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
 	/**
 	 * Register hooks.
 	 *
@@ -66,37 +67,35 @@ class CiviCRM_Groups_Sync_WordPress {
 	public function register_hooks() {
 
 		// Hook into group creation.
-		add_action( 'groups_created_group', array( $this, 'group_created' ), 10 );
+		add_action( 'groups_created_group', [ $this, 'group_created' ], 10 );
 
 		// Hook into group updates.
-		add_action( 'groups_updated_group', array( $this, 'group_updated' ), 10 );
+		add_action( 'groups_updated_group', [ $this, 'group_updated' ], 10 );
 
 		// Hook into group deletion.
-		add_action( 'groups_deleted_group', array( $this, 'group_deleted' ), 10 );
+		add_action( 'groups_deleted_group', [ $this, 'group_deleted' ], 10 );
 
 		// Add option to Group add form.
-		add_filter( 'groups_admin_groups_add_form_after_fields', array( $this, 'form_add_filter' ), 10 );
+		add_filter( 'groups_admin_groups_add_form_after_fields', [ $this, 'form_add_filter' ], 10 );
 
 		// Add option to Group edit form.
-		add_filter( 'groups_admin_groups_edit_form_after_fields', array( $this, 'form_edit_filter' ), 10, 2 );
+		add_filter( 'groups_admin_groups_edit_form_after_fields', [ $this, 'form_edit_filter' ], 10, 2 );
 
+		/*
 		// Hook into form submission?
-		//add_action( 'groups_admin_groups_add_submit_success', array( $this, 'form_submitted' ), 10 );
-		//add_action( 'groups_admin_groups_edit_submit_success', array( $this, 'form_submitted' ), 10 );
+		//add_action( 'groups_admin_groups_add_submit_success', [ $this, 'form_submitted' ], 10 );
+		//add_action( 'groups_admin_groups_edit_submit_success', [ $this, 'form_submitted' ], 10 );
+		*/
 
 		// Hook into user additions to a group.
-		add_action( 'groups_created_user_group', array( $this, 'group_member_added' ), 10, 2 );
+		add_action( 'groups_created_user_group', [ $this, 'group_member_added' ], 10, 2 );
 
 		// Hook into user deletions from a group.
-		add_action( 'groups_deleted_user_group', array( $this, 'group_member_deleted' ), 10, 2 );
+		add_action( 'groups_deleted_user_group', [ $this, 'group_member_deleted' ], 10, 2 );
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Create a "Groups" group.
@@ -117,20 +116,18 @@ class CiviCRM_Groups_Sync_WordPress {
 		}
 
 		// Remove hook.
-		remove_action( 'groups_created_group', array( $this, 'group_created' ), 10 );
+		remove_action( 'groups_created_group', [ $this, 'group_created' ], 10 );
 
 		// Create the group.
 		$group_id = Groups_Group::create( $params );
 
 		// Reinstate hook.
-		add_action( 'groups_created_group', array( $this, 'group_created' ), 10 );
+		add_action( 'groups_created_group', [ $this, 'group_created' ], 10 );
 
 		// --<
 		return $group_id;
 
 	}
-
-
 
 	/**
 	 * Update a "Groups" group.
@@ -143,20 +140,18 @@ class CiviCRM_Groups_Sync_WordPress {
 	public function group_update( $params ) {
 
 		// Remove hook.
-		remove_action( 'groups_updated_group', array( $this, 'group_updated' ), 10 );
+		remove_action( 'groups_updated_group', [ $this, 'group_updated' ], 10 );
 
 		// Update the group.
 		$group_id = Groups_Group::update( $params );
 
 		// Reinstate hook.
-		add_action( 'groups_updated_group', array( $this, 'group_updated' ), 10 );
+		add_action( 'groups_updated_group', [ $this, 'group_updated' ], 10 );
 
 		// --<
 		return $group_id;
 
 	}
-
-
 
 	/**
 	 * Delete a "Groups" group.
@@ -169,24 +164,20 @@ class CiviCRM_Groups_Sync_WordPress {
 	public function group_delete( $group_id ) {
 
 		// Remove hook.
-		remove_action( 'groups_deleted_group', array( $this, 'group_deleted' ), 10 );
+		remove_action( 'groups_deleted_group', [ $this, 'group_deleted' ], 10 );
 
 		// Delete the group.
 		$group_id = Groups_Group::delete( $group_id );
 
 		// Reinstate hook.
-		add_action( 'groups_deleted_group', array( $this, 'group_deleted' ), 10 );
+		add_action( 'groups_deleted_group', [ $this, 'group_deleted' ], 10 );
 
 		// --<
 		return $group_id;
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Intercept when a "Groups" group is created.
@@ -198,7 +189,9 @@ class CiviCRM_Groups_Sync_WordPress {
 	public function group_created( $group_id ) {
 
 		// Bail if our checkbox was not checked.
-		if ( ! $this->form_get_sync() ) return;
+		if ( ! $this->form_get_sync() ) {
+			return;
+		}
 
 		// Get full group data.
 		$group = Groups_Group::read( $group_id );
@@ -207,8 +200,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		$this->plugin->civicrm->group_create_from_wp_group( $group );
 
 	}
-
-
 
 	/**
 	 * Intercept when a "Groups" group is updated.
@@ -227,8 +218,6 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
 	/**
 	 * Intercept when a "Groups" group is deleted.
 	 *
@@ -243,11 +232,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Create a "Groups" group from a CiviCRM group.
@@ -261,15 +246,15 @@ class CiviCRM_Groups_Sync_WordPress {
 
 		// Construct minimum "Groups" group params.
 		if ( is_object( $civicrm_group ) ) {
-			$params = array(
-				'name' =>  isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
+			$params = [
+				'name' => isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group->description ) ? $civicrm_group->description : '',
-			);
+			];
 		} else {
-			$params = array(
+			$params = [
 				'name' => isset( $civicrm_group['title'] ) ? $civicrm_group['title'] : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group['description'] ) ? $civicrm_group['description'] : '',
-			);
+			];
 		}
 
 		// Create it.
@@ -279,8 +264,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		return $group_id;
 
 	}
-
-
 
 	/**
 	 * Update a "Groups" group from a CiviCRM group.
@@ -296,10 +279,10 @@ class CiviCRM_Groups_Sync_WordPress {
 		if ( is_object( $civicrm_group ) ) {
 
 			// Init params.
-			$params = array(
-				'name' =>  isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
+			$params = [
+				'name' => isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group->description ) ? $civicrm_group->description : '',
-			);
+			];
 
 			// Get source string.
 			$source = isset( $civicrm_group->source ) ? $civicrm_group->source : '';
@@ -307,10 +290,10 @@ class CiviCRM_Groups_Sync_WordPress {
 		} else {
 
 			// Init params.
-			$params = array(
+			$params = [
 				'name' => isset( $civicrm_group['title'] ) ? $civicrm_group['title'] : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group['description'] ) ? $civicrm_group['description'] : '',
-			);
+			];
 
 			// Get source string.
 			$source = isset( $civicrm_group['source'] ) ? $civicrm_group['source'] : '';
@@ -342,8 +325,6 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
 	/**
 	 * Delete a "Groups" group using a CiviCRM group ID.
 	 *
@@ -370,11 +351,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Get a "Groups" group's admin URL.
@@ -402,11 +379,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Get a "Groups" group using a CiviCRM group ID.
@@ -433,8 +406,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		return $wp_group;
 
 	}
-
-
 
 	/**
 	 * Get a "Groups" group ID using a CiviCRM group ID.
@@ -464,11 +435,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Filter the Add Group form.
@@ -484,7 +451,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		ob_start();
 
 		// Include template.
-		include( CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups-create.php' );
+		include CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups-create.php';
 
 		// Save the output and flush the buffer.
 		$field = ob_get_clean();
@@ -496,8 +463,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		return $content;
 
 	}
-
-
 
 	/**
 	 * Filter the Edit Group form.
@@ -525,7 +490,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		ob_start();
 
 		// Include template.
-		include( CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups-edit.php' );
+		include CIVICRM_GROUPS_SYNC_PATH . 'assets/templates/admin/settings-groups-edit.php';
 
 		// Save the output and flush the buffer.
 		$field = ob_get_clean();
@@ -537,8 +502,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		return $content;
 
 	}
-
-
 
 	/**
 	 * Get our Group form variable.
@@ -553,7 +516,8 @@ class CiviCRM_Groups_Sync_WordPress {
 		$sync = false;
 
 		// Maybe override if our POST variable is set.
-		if ( isset( $_POST['civicrm-group-field'] ) AND $_POST['civicrm-group-field'] == 1 ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		if ( isset( $_POST['civicrm-group-field'] ) && 1 === (int) trim( wp_unslash( $_POST['civicrm-group-field'] ) ) ) {
 			$sync = true;
 		}
 
@@ -561,8 +525,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		return $sync;
 
 	}
-
-
 
 	/**
 	 * Intercept successful Group form submission.
@@ -589,11 +551,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Add a WordPress user to a "Groups" group.
@@ -612,36 +570,34 @@ class CiviCRM_Groups_Sync_WordPress {
 		}
 
 		// Remove hook.
-		remove_action( 'groups_created_user_group', array( $this, 'group_member_added' ), 10 );
+		remove_action( 'groups_created_user_group', [ $this, 'group_member_added' ], 10 );
 
 		// Add user to group.
-		$success = Groups_User_Group::create( array(
+		$success = Groups_User_Group::create( [
 			'user_id'  => $user_id,
 			'group_id' => $group_id,
-		));
+		] );
 
 		// Reinstate hook.
-		add_action( 'groups_created_user_group', array( $this, 'group_member_added' ), 10, 2 );
+		add_action( 'groups_created_user_group', [ $this, 'group_member_added' ], 10, 2 );
 
 		// Maybe log on failure?
 		if ( ! $success ) {
-			$e = new Exception;
+			$e = new Exception();
 			$trace = $e->getTraceAsString();
-			error_log( print_r( array(
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'message' => __( 'Could not add user to group.', 'civicrm-groups-sync' ),
 				'user_id' => $user_id,
 				'group_id' => $group_id,
 				'backtrace' => $trace,
-			), true ) );
+			], true ) );
 		}
 
 		// --<
 		return $success;
 
 	}
-
-
 
 	/**
 	 * Delete a WordPress user from a "Groups" group.
@@ -660,25 +616,25 @@ class CiviCRM_Groups_Sync_WordPress {
 		}
 
 		// Remove hook.
-		remove_action( 'groups_deleted_user_group', array( $this, 'group_member_deleted' ), 10 );
+		remove_action( 'groups_deleted_user_group', [ $this, 'group_member_deleted' ], 10 );
 
 		// Delete user from group.
 		$success = Groups_User_Group::delete( $user_id, $group_id );
 
 		// Reinstate hook.
-		add_action( 'groups_deleted_user_group', array( $this, 'group_member_deleted' ), 10, 2 );
+		add_action( 'groups_deleted_user_group', [ $this, 'group_member_deleted' ], 10, 2 );
 
 		// Maybe log on failure?
 		if ( ! $success ) {
-			$e = new Exception;
+			$e = new Exception();
 			$trace = $e->getTraceAsString();
-			error_log( print_r( array(
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'message' => __( 'Could not delete user from group.', 'civicrm-groups-sync' ),
 				'user_id' => $user_id,
 				'group_id' => $group_id,
 				'backtrace' => $trace,
-			), true ) );
+			], true ) );
 		}
 
 		// --<
@@ -686,11 +642,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Intercept when a WordPress user is added to a "Groups" group.
@@ -706,7 +658,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_contact_id = $this->plugin->civicrm->contact_id_get_by_user_id( $user_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_contact_id ) OR $civicrm_contact_id === false ) {
+		if ( empty( $civicrm_contact_id ) || $civicrm_contact_id === false ) {
 			return;
 		}
 
@@ -714,7 +666,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_group = $this->plugin->civicrm->group_get_by_wp_id( $group_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_group ) OR $civicrm_group === false ) {
+		if ( empty( $civicrm_group ) || $civicrm_group === false ) {
 			return;
 		}
 
@@ -722,8 +674,6 @@ class CiviCRM_Groups_Sync_WordPress {
 		$success = $this->plugin->civicrm->group_contact_create( $civicrm_group['id'], $civicrm_contact_id );
 
 	}
-
-
 
 	/**
 	 * Intercept when a WordPress user is deleted from a "Groups" group.
@@ -739,7 +689,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_contact_id = $this->plugin->civicrm->contact_id_get_by_user_id( $user_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_contact_id ) OR $civicrm_contact_id === false ) {
+		if ( empty( $civicrm_contact_id ) || $civicrm_contact_id === false ) {
 			return;
 		}
 
@@ -747,7 +697,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_group = $this->plugin->civicrm->group_get_by_wp_id( $group_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_group ) OR $civicrm_group === false ) {
+		if ( empty( $civicrm_group ) || $civicrm_group === false ) {
 			return;
 		}
 
@@ -756,11 +706,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Get a WordPress user ID for a given CiviCRM contact ID.
@@ -778,7 +724,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		}
 
 		// Make sure CiviCRM file is included.
-		require_once( 'CRM/Core/BAO/UFMatch.php' );
+		require_once 'CRM/Core/BAO/UFMatch.php';
 
 		// Search using CiviCRM's logic.
 		$user_id = CRM_Core_BAO_UFMatch::getUFId( $contact_id );
@@ -807,8 +753,6 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
 	/**
 	 * Get a WordPress user object for a given CiviCRM contact ID.
 	 *
@@ -823,7 +767,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$user_id = $this->user_id_get_by_contact_id( $contact_id );
 
 		// Bail if we didn't get one.
-		if ( empty( $user_id ) OR $user_id === false ) {
+		if ( empty( $user_id ) || $user_id === false ) {
 			return false;
 		}
 
@@ -831,7 +775,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$user = new WP_User( $user_id );
 
 		// Bail if we didn't get one.
-		if ( ! ( $user instanceof WP_User ) OR ! $user->exists() ) {
+		if ( ! ( $user instanceof WP_User ) || ! $user->exists() ) {
 			return false;
 		}
 
@@ -840,6 +784,4 @@ class CiviCRM_Groups_Sync_WordPress {
 
 	}
 
-
-
-} // Class ends.
+}

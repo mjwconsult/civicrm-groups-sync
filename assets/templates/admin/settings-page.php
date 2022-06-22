@@ -1,11 +1,24 @@
-<!-- assets/templates/admin/settings-page.php -->
+<?php
+/**
+ * Settings Page template.
+ *
+ * Handles markup for the Settings Page.
+ *
+ * @package CiviCRM_Groups_Sync
+ * @since 0.1
+ */
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
+
+?><!-- assets/templates/admin/settings-page.php -->
 <div class="wrap">
 
-	<h1><?php _e( 'CiviCRM Groups Sync', 'civicrm-groups-sync' ); ?></h1>
+	<h1><?php esc_html_e( 'CiviCRM Groups Sync', 'civicrm-groups-sync' ); ?></h1>
 
 	<?php if ( $show_tabs ) : ?>
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo $urls['settings']; ?>" class="nav-tab nav-tab-active"><?php _e( 'Settings', 'civicrm-groups-sync' ); ?></a>
+			<a href="<?php echo $urls['settings']; ?>" class="nav-tab nav-tab-active"><?php esc_html_e( 'Settings', 'civicrm-groups-sync' ); ?></a>
 			<?php
 
 			/**
@@ -28,17 +41,14 @@
 
 		<?php wp_nonce_field( 'civicrm_groups_sync_settings_action', 'civicrm_groups_sync_settings_nonce' ); ?>
 
-		<p><?php _e( 'Settings to go here.', 'civicrm-groups-sync' ) ?></p>
+		<p><?php esc_html_e( 'Settings to go here.', 'civicrm-groups-sync' ); ?></p>
 
 		<hr />
 
 		<p class="submit">
-			<input class="button-primary" type="submit" id="civicrm_groups_sync_settings_submit" name="civicrm_groups_sync_settings_submit" value="<?php _e( 'Save Changes', 'civicrm-groups-sync' ); ?>" />
+			<input class="button-primary" type="submit" id="civicrm_groups_sync_settings_submit" name="civicrm_groups_sync_settings_submit" value="<?php esc_attr_e( 'Save Changes', 'civicrm-groups-sync' ); ?>" />
 		</p>
 
 	</form>
 
 </div><!-- /.wrap -->
-
-
-

@@ -1,16 +1,21 @@
-<?php /*
---------------------------------------------------------------------------------
-Plugin Name: CiviCRM Groups Sync
-Plugin URI: https://develop.tadpole.cc/plugins/civicrm-groups-sync
-Description: Keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the Groups plugin.
-Author: Christian Wach
-Version: 0.1.2
-Author URI: http://haystack.co.uk
-Text Domain: civicrm-groups-sync
-Domain Path: /languages
-Depends: CiviCRM
---------------------------------------------------------------------------------
-*/
+<?php
+/**
+ * Plugin Name: CiviCRM Groups Sync
+ * Plugin URI: https://develop.tadpole.cc/plugins/civicrm-groups-sync
+ * Description: Keeps Contacts in CiviCRM Groups in sync with WordPress Users in groups provided by the Groups plugin.
+ * Author: Christian Wach
+ * Version: 0.1.2
+ * Author URI: http://haystack.co.uk
+ * Text Domain: civicrm-groups-sync
+ * Domain Path: /languages
+ * Depends: CiviCRM
+ *
+ * @package CiviCRM_Groups_Sync
+ * @since 0.1
+ */
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 
 
@@ -34,7 +39,7 @@ if ( ! defined( 'CIVICRM_GROUPS_SYNC_PATH' ) ) {
 
 
 /**
- * CiviCRM Groups Sync Class.
+ * Plugin class.
  *
  * A class that encapsulates plugin functionality.
  *
@@ -69,8 +74,6 @@ class CiviCRM_Groups_Sync {
 	 */
 	public $wordpress;
 
-
-
 	/**
 	 * Constructor.
 	 *
@@ -79,11 +82,9 @@ class CiviCRM_Groups_Sync {
 	public function __construct() {
 
 		// Initialise.
-		add_action( 'plugins_loaded', array( $this, 'initialise' ) );
+		add_action( 'plugins_loaded', [ $this, 'initialise' ] );
 
 	}
-
-
 
 	/**
 	 * Do stuff on plugin init.
@@ -94,7 +95,7 @@ class CiviCRM_Groups_Sync {
 
 		// Only do this once.
 		static $done;
-		if ( isset( $done ) AND $done === true ) {
+		if ( isset( $done ) && $done === true ) {
 			return;
 		}
 
@@ -102,14 +103,22 @@ class CiviCRM_Groups_Sync {
 		$this->enable_translation();
 
 		// Init only when CiviCRM is fully installed.
-		if ( ! defined( 'CIVICRM_INSTALLED' ) ) return;
-		if ( ! CIVICRM_INSTALLED ) return;
+		if ( ! defined( 'CIVICRM_INSTALLED' ) ) {
+			return;
+		}
+		if ( ! CIVICRM_INSTALLED ) {
+			return;
+		}
 
 		// Bail if CiviCRM plugin is not present.
-		if ( ! function_exists( 'civi_wp' ) ) return;
+		if ( ! function_exists( 'civi_wp' ) ) {
+			return;
+		}
 
 		// Bail if we don't have the "Groups" plugin.
-		if ( ! defined( 'GROUPS_CORE_VERSION' ) ) return;
+		if ( ! defined( 'GROUPS_CORE_VERSION' ) ) {
+			return;
+		}
 
 		// Include files.
 		$this->include_files();
@@ -132,8 +141,6 @@ class CiviCRM_Groups_Sync {
 
 	}
 
-
-
 	/**
 	 * Include files.
 	 *
@@ -142,13 +149,11 @@ class CiviCRM_Groups_Sync {
 	public function include_files() {
 
 		// Load our classes.
-		require( CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-admin.php' );
-		require( CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-civicrm.php' );
-		require( CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-wordpress.php' );
+		require CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-admin.php';
+		require CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-civicrm.php';
+		require CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-wordpress.php';
 
 	}
-
-
 
 	/**
 	 * Set up this plugin's objects.
@@ -164,8 +169,6 @@ class CiviCRM_Groups_Sync {
 
 	}
 
-
-
 	/**
 	 * Register hooks.
 	 *
@@ -177,8 +180,6 @@ class CiviCRM_Groups_Sync {
 
 	}
 
-
-
 	/**
 	 * Load translation files.
 	 *
@@ -186,7 +187,8 @@ class CiviCRM_Groups_Sync {
 	 */
 	public function enable_translation() {
 
-		// Enable translation
+		// Enable translation.
+		// phpcs:ignore WordPress.WP.DeprecatedParameters.Load_plugin_textdomainParam2Found
 		load_plugin_textdomain(
 			'civicrm-groups-sync', // Unique name.
 			false, // Deprecated argument.
@@ -195,11 +197,7 @@ class CiviCRM_Groups_Sync {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Check if this plugin is network activated.
@@ -226,7 +224,7 @@ class CiviCRM_Groups_Sync {
 
 		// Make sure plugin file is included when outside admin.
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
-			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+			require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 
 		// Get path from 'plugins' directory to this plugin.
@@ -240,8 +238,6 @@ class CiviCRM_Groups_Sync {
 
 	}
 
-
-
 	/**
 	 * Check if CiviCRM is initialised.
 	 *
@@ -252,16 +248,16 @@ class CiviCRM_Groups_Sync {
 	public function is_civicrm_initialised() {
 
 		// Bail if no CiviCRM init function.
-		if ( ! function_exists( 'civi_wp' ) ) return false;
+		if ( ! function_exists( 'civi_wp' ) ) {
+			return false;
+		}
 
 		// Try and initialise CiviCRM.
 		return civi_wp()->initialize();
 
 	}
 
-
-
-} // Class ends.
+}
 
 
 
@@ -287,13 +283,14 @@ function civicrm_groups_sync() {
 
 }
 
-
-
 // Initialise plugin now.
 civicrm_groups_sync();
 
-// Uninstall uses the 'uninstall.php' method.
-// See: http://codex.wordpress.org/Function_Reference/register_uninstall_hook
+/*
+ * Uninstall uses the 'uninstall.php' method.
+ *
+ * @see https://codex.wordpress.org/Function_Reference/register_uninstall_hook
+ */
 
 
 
@@ -309,20 +306,28 @@ civicrm_groups_sync();
 function civicrm_groups_sync_action_links( $links, $file ) {
 
 	// Add links only when CiviCRM is fully installed.
-	if ( ! defined( 'CIVICRM_INSTALLED' ) ) return $links;
-	if ( ! CIVICRM_INSTALLED ) return $links;
+	if ( ! defined( 'CIVICRM_INSTALLED' ) ) {
+		return $links;
+	}
+	if ( ! CIVICRM_INSTALLED ) {
+		return $links;
+	}
 
 	// Bail if CiviCRM plugin is not present.
-	if ( ! function_exists( 'civi_wp' ) ) return $links;
+	if ( ! function_exists( 'civi_wp' ) ) {
+		return $links;
+	}
 
 	// Bail if we don't have the "Groups" plugin.
-	if ( ! defined( 'GROUPS_CORE_VERSION' ) ) return $links;
+	if ( ! defined( 'GROUPS_CORE_VERSION' ) ) {
+		return $links;
+	}
 
 	// Add settings link.
 	if ( $file == plugin_basename( dirname( __FILE__ ) . '/civicrm-groups-sync.php' ) ) {
 
 		// Add settings link if not network activated and not viewing network admin.
-		$link = add_query_arg( array( 'page' => 'civicrm_groups_sync_parent' ), admin_url( 'options-general.php' ) );
+		$link = add_query_arg( [ 'page' => 'civicrm_groups_sync_parent' ], admin_url( 'options-general.php' ) );
 		//$links[] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Settings', 'civicrm-groups-sync' ) . '</a>';
 
 		// Always add Paypal link.
@@ -338,6 +343,3 @@ function civicrm_groups_sync_action_links( $links, $file ) {
 
 // Add filter for the above.
 add_filter( 'plugin_action_links', 'civicrm_groups_sync_action_links', 10, 2 );
-
-
-

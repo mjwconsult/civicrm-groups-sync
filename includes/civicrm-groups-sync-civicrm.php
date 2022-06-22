@@ -1,7 +1,18 @@
 <?php
+/**
+ * CiviCRM class.
+ *
+ * Handles CiviCRM-related functionality.
+ *
+ * @package CiviCRM_Groups_Sync
+ * @since 0.1
+ */
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 /**
- * CiviCRM Groups Sync CiviCRM Class.
+ * CiviCRM Class.
  *
  * A class that encapsulates CiviCRM functionality.
  *
@@ -18,8 +29,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public $plugin;
 
-
-
 	/**
 	 * Class constructor.
 	 *
@@ -29,19 +38,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function __construct( $plugin ) {
 
-		// store reference to plugin
+		// Store reference to plugin.
 		$this->plugin = $plugin;
 
 		// Add action for init.
-		add_action( 'civicrm_groups_sync_loaded', array( $this, 'initialise' ) );
+		add_action( 'civicrm_groups_sync_loaded', [ $this, 'initialise' ] );
 
 	}
-
-
-
-	//##########################################################################
-
-
 
 	/**
 	 * Initialise this object.
@@ -55,8 +58,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
 	/**
 	 * Register hooks.
 	 *
@@ -65,37 +66,33 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function register_hooks() {
 
 		// Register template directory for form amends.
-		add_action( 'civicrm_config', array( $this, 'register_form_directory' ), 10 );
+		add_action( 'civicrm_config', [ $this, 'register_form_directory' ], 10 );
 
 		// Modify CiviCRM group create form.
-		add_action( 'civicrm_buildForm', array( $this, 'form_group_create_build' ), 10, 2 );
+		add_action( 'civicrm_buildForm', [ $this, 'form_group_create_build' ], 10, 2 );
 
 		// Intercept CiviCRM group create form submission process.
-		add_action( 'civicrm_postProcess', array( $this, 'form_group_create_process' ), 10, 2 );
+		add_action( 'civicrm_postProcess', [ $this, 'form_group_create_process' ], 10, 2 );
 
 		// Intercept before and after CiviCRM creating a group.
-		add_action( 'civicrm_pre', array( $this, 'group_created_pre' ), 10, 4 );
-		add_action( 'civicrm_post', array( $this, 'group_created_post' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
+		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
 		// Intercept after CiviCRM updated a group.
-		add_action( 'civicrm_post', array( $this, 'group_updated' ), 10, 4 );
+		add_action( 'civicrm_post', [ $this, 'group_updated' ], 10, 4 );
 
 		// Intercept CiviCRM's add contacts to group.
-		add_action( 'civicrm_pre', array( $this, 'group_contacts_added' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10, 4 );
 
 		// Intercept CiviCRM's delete contacts from group.
-		add_action( 'civicrm_pre', array( $this, 'group_contacts_deleted' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10, 4 );
 
 		// Intercept CiviCRM's rejoin contacts to group.
-		add_action( 'civicrm_pre', array( $this, 'group_contacts_rejoined' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_contacts_rejoined' ], 10, 4 );
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Register directory that CiviCRM searches in for our form template file.
@@ -107,7 +104,9 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function register_form_directory( &$config ) {
 
 		// Kick out if no CiviCRM.
-		if ( ! $this->plugin->is_civicrm_initialised() ) return;
+		if ( ! $this->plugin->is_civicrm_initialised() ) {
+			return;
+		}
 
 		// Get template instance.
 		$template = CRM_Core_Smarty::singleton();
@@ -120,11 +119,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Register template directory.
 		$template_include_path = $custom_path . PATH_SEPARATOR . get_include_path();
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_set_include_path
 		set_include_path( $template_include_path );
 
 	}
-
-
 
 	/**
 	 * Enable a Groups group to be created when creating a CiviCRM group.
@@ -137,13 +135,15 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function form_group_create_build( $formName, &$form ) {
 
 		// Is this the group edit form?
-		if ( $formName != 'CRM_Group_Form_Edit' ) return;
+		if ( $formName != 'CRM_Group_Form_Edit' ) {
+			return;
+		}
 
 		// Get CiviCRM group.
 		$civicrm_group = $form->getVar( '_group' );
 
 		// Assign template depending on whether we have a group.
-		if ( isset( $civicrm_group ) AND ! empty( $civicrm_group ) ) {
+		if ( isset( $civicrm_group ) && ! empty( $civicrm_group ) ) {
 
 			// It's the edit group form.
 
@@ -162,12 +162,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			$form->add( 'html', 'civicrm_groups_sync_edit', __( 'Existing Synced Group', 'civicrm-groups-sync' ) );
 
 			// Add URL.
-			$form->assign('civicrm_groups_sync_edit_url', $group_url);
+			$form->assign( 'civicrm_groups_sync_edit_url', $group_url );
 
 			// Insert template block into the page.
-			CRM_Core_Region::instance('page-body')->add( array(
-				'template' => 'civicrm-groups-sync-edit.tpl'
-			));
+			CRM_Core_Region::instance( 'page-body' )->add( [
+				'template' => 'civicrm-groups-sync-edit.tpl',
+			] );
 
 		} else {
 
@@ -177,15 +177,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			$form->add( 'checkbox', 'civicrm_groups_sync_create', __( 'Create Synced Group', 'civicrm-groups-sync' ) );
 
 			// Insert template block into the page.
-			CRM_Core_Region::instance('page-body')->add( array(
-				'template' => 'civicrm-groups-sync-create.tpl'
-			));
+			CRM_Core_Region::instance( 'page-body' )->add( [
+				'template' => 'civicrm-groups-sync-create.tpl',
+			] );
 
 		}
 
 	}
-
-
 
 	/**
 	 * Callback for the Add Group form's postProcess hook.
@@ -203,24 +201,26 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function form_group_create_process( $formName, &$form ) {
 
 		// Kick out if not group edit form.
-		if ( ! ( $form instanceof CRM_Group_Form_Edit ) ) return;
+		if ( ! ( $form instanceof CRM_Group_Form_Edit ) ) {
+			return;
+		}
 
 		// Inspect submitted values.
 		$values = $form->getVar( '_submitValues' );
 
 		// Was our checkbox ticked?
-		if ( ! isset( $values['civicrm_groups_sync_create'] ) ) return;
-		if ( $values['civicrm_groups_sync_create'] != '1' ) return;
+		if ( ! isset( $values['civicrm_groups_sync_create'] ) ) {
+			return;
+		}
+		if ( $values['civicrm_groups_sync_create'] != '1' ) {
+			return;
+		}
 
 		// What now?
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Intercept when a CiviCRM group is about to be created.
@@ -238,20 +238,28 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_created_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'create' ) return;
+		if ( $op != 'create' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) return;
+		if ( $object_name != 'Group' ) {
+			return;
+		}
 
 		// Was our checkbox ticked?
-		if ( ! isset( $civicrm_group['civicrm_groups_sync_create'] ) ) return;
-		if ( $civicrm_group['civicrm_groups_sync_create'] != '1' ) return;
+		if ( ! isset( $civicrm_group['civicrm_groups_sync_create'] ) ) {
+			return;
+		}
+		if ( $civicrm_group['civicrm_groups_sync_create'] != '1' ) {
+			return;
+		}
 
 		// Always make the group of type "Access Control".
-		if ( isset( $civicrm_group['group_type'] ) AND is_array( $civicrm_group['group_type'] ) ) {
+		if ( isset( $civicrm_group['group_type'] ) && is_array( $civicrm_group['group_type'] ) ) {
 			$civicrm_group['group_type'][1] = 1;
 		} else {
-			$civicrm_group['group_type'] = array( 1 => 1 );
+			$civicrm_group['group_type'] = [ 1 => 1 ];
 		}
 
 		// Use the "source" field to denote a "Synced Group".
@@ -261,8 +269,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$this->sync_please = true;
 
 	}
-
-
 
 	/**
 	 * Intercept after a CiviCRM group has been created.
@@ -280,55 +286,67 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_created_post( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'create' ) return;
+		if ( $op != 'create' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) return;
+		if ( $object_name != 'Group' ) {
+			return;
+		}
 
 		// Make sure we have a group.
-		if ( ! ( $civicrm_group instanceOf CRM_Contact_BAO_Group ) ) return;
+		if ( ! ( $civicrm_group instanceof CRM_Contact_BAO_Group ) ) {
+			return;
+		}
 
 		// Check for our flag.
-		if ( ! isset( $this->sync_please ) ) return;
-		if ( $this->sync_please !== true ) return;
+		if ( ! isset( $this->sync_please ) ) {
+			return;
+		}
+		if ( $this->sync_please !== true ) {
+			return;
+		}
 
 		// Bail if the "source" field is not set.
-		if ( ! isset( $civicrm_group->source ) ) return;
-		if ( $civicrm_group->source != 'synced-group' ) return;
+		if ( ! isset( $civicrm_group->source ) ) {
+			return;
+		}
+		if ( $civicrm_group->source != 'synced-group' ) {
+			return;
+		}
 
 		// Create a "Groups" group from CiviCRM group data.
 		$wp_group_id = $this->plugin->wordpress->group_create_from_civicrm_group( $civicrm_group );
 
 		// Remove hooks.
-		remove_action( 'civicrm_pre', array( $this, 'group_created_pre' ), 10 );
-		remove_action( 'civicrm_post', array( $this, 'group_created_post' ), 10 );
+		remove_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10 );
+		remove_action( 'civicrm_post', [ $this, 'group_created_post' ], 10 );
 
 		// Update the "source" field to include the ID of the WordPress Group.
-		$result = civicrm_api( 'Group', 'create', array(
+		$result = civicrm_api( 'Group', 'create', [
 			'version' => 3,
 			'id' => $civicrm_group->id,
 			'source' => 'synced-group-' . $wp_group_id,
-		));
+		] );
 
 		// Reinstate hooks.
-		add_action( 'civicrm_pre', array( $this, 'group_created_pre' ), 10, 4 );
-		add_action( 'civicrm_post', array( $this, 'group_created_post' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
+		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
 		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) AND $result['is_error'] == '1' ) {
-			error_log( print_r( array(
+		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'op' => $op,
 				'object_name' => $object_name,
 				'objectId' => $civicrm_group_id,
 				'objectRef' => $civicrm_group,
 				'result' => $result,
-			), true ) );
+			], true ) );
 		}
 
 	}
-
-
 
 	/**
 	 * Intercept when a CiviCRM group has been updated.
@@ -348,37 +366,45 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_updated( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'edit' ) return;
+		if ( $op != 'edit' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) return;
+		if ( $object_name != 'Group' ) {
+			return;
+		}
 
 		// Make sure we have a group.
-		if ( ! ( $civicrm_group instanceOf CRM_Contact_BAO_Group ) ) return;
+		if ( ! ( $civicrm_group instanceof CRM_Contact_BAO_Group ) ) {
+			return;
+		}
 
 		// Get the full CiviCRM group.
-		$civicrm_group_data = civicrm_api( 'Group', 'getsingle', array(
+		$civicrm_group_data = civicrm_api( 'Group', 'getsingle', [
 			'version' => 3,
 			'id' => $civicrm_group_id,
-		));
+		] );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group_data['is_error'] ) AND $civicrm_group_data['is_error'] == '1' ) {
+		if ( isset( $civicrm_group_data['is_error'] ) && $civicrm_group_data['is_error'] == '1' ) {
 			return;
 		}
 
 		// Bail if the "source" field is not set.
-		if ( ! isset( $civicrm_group_data['source'] ) ) return;
+		if ( ! isset( $civicrm_group_data['source'] ) ) {
+			return;
+		}
 
 		// Bail if the "source" field is not for a synced group.
-		if ( false === strpos( $civicrm_group_data['source'], 'synced-group' ) ) return;
+		if ( false === strpos( $civicrm_group_data['source'], 'synced-group' ) ) {
+			return;
+		}
 
 		// Update the "Groups" group from CiviCRM group data.
 		$wp_group_id = $this->plugin->wordpress->group_update_from_civicrm_group( $civicrm_group_data );
 
 	}
-
-
 
 	/**
 	 * Intercept a CiviCRM group prior to it being deleted.
@@ -393,18 +419,18 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_deleted_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'delete' ) return;
+		if ( $op != 'delete' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) return;
+		if ( $object_name != 'Group' ) {
+			return;
+		}
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Get a CiviCRM group's admin URL.
@@ -417,7 +443,9 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_get_url( $group_id ) {
 
 		// Kick out if no CiviCRM.
-		if ( ! $this->plugin->is_civicrm_initialised() ) return '';
+		if ( ! $this->plugin->is_civicrm_initialised() ) {
+			return '';
+		}
 
 		// Get group URL.
 		$group_url = CRM_Utils_System::url( 'civicrm/group', 'reset=1&action=update&id=' . $group_id );
@@ -435,30 +463,26 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Get a CiviCRM group by its ID.
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $wp_group_id The numeric ID of the group.
+	 * @param int $group_id The numeric ID of the group.
 	 * @return array|bool $civicrm_group The CiviCRM group data array, or false on failure.
 	 */
 	public function group_get_by_id( $group_id ) {
 
 		// Get the CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', array(
+		$civicrm_group = civicrm_api( 'Group', 'getsingle', [
 			'version' => 3,
 			'id' => $group_id,
-		));
+		] );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group['is_error'] ) AND $civicrm_group['is_error'] == '1' ) {
+		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
 			return false;
 		}
 
@@ -466,8 +490,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		return $civicrm_group;
 
 	}
-
-
 
 	/**
 	 * Get a CiviCRM group using a "Groups" group ID.
@@ -480,13 +502,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_get_by_wp_id( $wp_group_id ) {
 
 		// Get the synced CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', array(
+		$civicrm_group = civicrm_api( 'Group', 'getsingle', [
 			'version' => 3,
 			'source' => 'synced-group-' . $wp_group_id,
-		));
+		] );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group['is_error'] ) AND $civicrm_group['is_error'] == '1' ) {
+		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
 			return false;
 		}
 
@@ -494,8 +516,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		return $civicrm_group;
 
 	}
-
-
 
 	/**
 	 * Get the "Groups" group ID using a CiviCRM group ID.
@@ -508,13 +528,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_get_wp_id_by_civicrm_id( $group_id ) {
 
 		// Get the synced CiviCRM group.
-		$civicrm_group = civicrm_api( 'Group', 'getsingle', array(
+		$civicrm_group = civicrm_api( 'Group', 'getsingle', [
 			'version' => 3,
 			'id' => $group_id,
-		));
+		] );
 
 		// Bail on failure.
-		if ( isset( $civicrm_group['is_error'] ) AND $civicrm_group['is_error'] == '1' ) {
+		if ( isset( $civicrm_group['is_error'] ) && $civicrm_group['is_error'] == '1' ) {
 			return false;
 		}
 
@@ -532,8 +552,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
 	/**
 	 * Create a CiviCRM group using a "Groups" group object.
 	 *
@@ -550,30 +568,30 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 		// Remove hooks.
-		remove_action( 'civicrm_pre', array( $this, 'group_created_pre' ), 10 );
-		remove_action( 'civicrm_post', array( $this, 'group_created_post' ), 10 );
+		remove_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10 );
+		remove_action( 'civicrm_post', [ $this, 'group_created_post' ], 10 );
 
 		// Create the synced CiviCRM group.
-		$result = civicrm_api( 'Group', 'create', array(
+		$result = civicrm_api( 'Group', 'create', [
 			'version' => 3,
 			'name' => wp_unslash( $wp_group->name ),
 			'title' => wp_unslash( $wp_group->name ),
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
-			'group_type' => array( 1 => 1 ),
+			'group_type' => [ 1 => 1 ],
 			'source' => 'synced-group-' . $wp_group->group_id,
-		));
+		] );
 
 		// Reinstate hooks.
-		add_action( 'civicrm_pre', array( $this, 'group_created_pre' ), 10, 4 );
-		add_action( 'civicrm_post', array( $this, 'group_created_post' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_created_pre' ], 10, 4 );
+		add_action( 'civicrm_post', [ $this, 'group_created_post' ], 10, 4 );
 
 		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) AND $result['is_error'] == '1' ) {
-			error_log( print_r( array(
+		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'wp_group' => $wp_group,
 				'result' => $result,
-			), true ) );
+			], true ) );
 			return false;
 		}
 
@@ -581,8 +599,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		return absint( $result['id'] );
 
 	}
-
-
 
 	/**
 	 * Update a CiviCRM group using a "Groups" group object.
@@ -603,33 +619,33 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$civicrm_group = $this->group_get_by_wp_id( $wp_group->group_id );
 
 		// Sanity check.
-		if ( $civicrm_group === false OR empty( $civicrm_group['id'] ) ) {
+		if ( $civicrm_group === false || empty( $civicrm_group['id'] ) ) {
 			return false;
 		}
 
 		// Remove hook.
-		remove_action( 'civicrm_post', array( $this, 'group_updated' ), 10 );
+		remove_action( 'civicrm_post', [ $this, 'group_updated' ], 10 );
 
 		// Update the synced CiviCRM group.
-		$result = civicrm_api( 'Group', 'create', array(
+		$result = civicrm_api( 'Group', 'create', [
 			'version' => 3,
 			'id' => $civicrm_group['id'],
 			'name' => wp_unslash( $wp_group->name ),
 			'title' => wp_unslash( $wp_group->name ),
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
-		));
+		] );
 
 		// Reinstate hook.
-		add_action( 'civicrm_post', array( $this, 'group_updated' ), 10, 4 );
+		add_action( 'civicrm_post', [ $this, 'group_updated' ], 10, 4 );
 
 		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) AND $result['is_error'] == '1' ) {
-			error_log( print_r( array(
+		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'wp_group' => $wp_group,
 				'civicrm_group' => $civicrm_group,
 				'result' => $result,
-			), true ) );
+			], true ) );
 			return false;
 		}
 
@@ -637,8 +653,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		return absint( $civicrm_group['id'] );
 
 	}
-
-
 
 	/**
 	 * Delete a CiviCRM group using a "Groups" group ID.
@@ -654,24 +668,24 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$civicrm_group = $this->group_get_by_wp_id( $wp_group_id );
 
 		// Sanity check.
-		if ( $civicrm_group === false OR empty( $civicrm_group['id'] ) ) {
+		if ( $civicrm_group === false || empty( $civicrm_group['id'] ) ) {
 			return false;
 		}
 
 		// Delete the synced CiviCRM group.
-		$result = civicrm_api( 'Group', 'delete', array(
+		$result = civicrm_api( 'Group', 'delete', [
 			'version' => 3,
 			'id' => $civicrm_group['id'],
-		));
+		] );
 
 		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) AND $result['is_error'] == '1' ) {
-			error_log( print_r( array(
+		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'wp_group_id' => $wp_group_id,
 				'civicrm_group' => $civicrm_group,
 				'result' => $result,
-			), true ) );
+			], true ) );
 			return false;
 		}
 
@@ -680,11 +694,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Add a CiviCRM contact to a CiviCRM group.
@@ -698,27 +708,27 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contact_create( $civicrm_group_id, $civicrm_contact_id ) {
 
 		// Remove hook.
-		remove_action( 'civicrm_pre', array( $this, 'group_contacts_added' ), 10 );
+		remove_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10 );
 
 		// Call API.
-		$result = civicrm_api( 'GroupContact', 'create', array(
+		$result = civicrm_api( 'GroupContact', 'create', [
 			'version' => 3,
 			'group_id' => $civicrm_group_id,
 			'contact_id' => $civicrm_contact_id,
 			'status' => 'Added',
-		));
+		] );
 
 		// Reinstate hook.
-		add_action( 'civicrm_pre', array( $this, 'group_contacts_added' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_contacts_added' ], 10, 4 );
 
 		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) AND $result['is_error'] == '1' ) {
-			error_log( print_r( array(
+		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'civicrm_group_id' => $civicrm_group_id,
 				'civicrm_contact_id' => $civicrm_contact_id,
 				'result' => $result,
-			), true ) );
+			], true ) );
 			return false;
 		}
 
@@ -726,8 +736,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		return $result;
 
 	}
-
-
 
 	/**
 	 * Delete a CiviCRM contact from a CiviCRM group.
@@ -741,27 +749,27 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contact_delete( $civicrm_group_id, $civicrm_contact_id ) {
 
 		// Remove hook.
-		remove_action( 'civicrm_pre', array( $this, 'group_contacts_deleted' ), 10 );
+		remove_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10 );
 
 		// Call API.
-		$result = civicrm_api( 'GroupContact', 'create', array(
+		$result = civicrm_api( 'GroupContact', 'create', [
 			'version' => 3,
 			'group_id' => $civicrm_group_id,
 			'contact_id' => $civicrm_contact_id,
 			'status' => 'Removed',
-		));
+		] );
 
 		// Reinstate hooks.
-		add_action( 'civicrm_pre', array( $this, 'group_contacts_deleted' ), 10, 4 );
+		add_action( 'civicrm_pre', [ $this, 'group_contacts_deleted' ], 10, 4 );
 
 		// Add log entry on failure.
-		if ( isset( $result['is_error'] ) AND $result['is_error'] == '1' ) {
-			error_log( print_r( array(
+		if ( isset( $result['is_error'] ) && $result['is_error'] == '1' ) {
+			error_log( print_r( [
 				'method' => __METHOD__,
 				'civicrm_group_id' => $civicrm_group_id,
 				'civicrm_contact_id' => $civicrm_contact_id,
 				'result' => $result,
-			), true ) );
+			], true ) );
 			return false;
 		}
 
@@ -770,11 +778,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Intercept when a CiviCRM contact is added to a group.
@@ -789,10 +793,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contacts_added( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
 		// Target our operation.
-		if ( $op != 'create' ) return;
+		if ( $op != 'create' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'GroupContact' ) return;
+		if ( $object_name != 'GroupContact' ) {
+			return;
+		}
 
 		// Get "Groups" group ID.
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
@@ -804,7 +812,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Loop through added contacts.
 		if ( count( $contact_ids ) > 0 ) {
-			foreach( $contact_ids AS $contact_id ) {
+			foreach ( $contact_ids as $contact_id ) {
 
 				// Get WordPress user ID.
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
@@ -819,8 +827,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
 	/**
 	 * Intercept when a CiviCRM contact is deleted (or removed) from a group.
 	 *
@@ -834,10 +840,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contacts_deleted( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
 		// Target our operation.
-		if ( $op != 'delete' ) return;
+		if ( $op != 'delete' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'GroupContact' ) return;
+		if ( $object_name != 'GroupContact' ) {
+			return;
+		}
 
 		// Get "Groups" group ID.
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
@@ -849,7 +859,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Loop through deleted contacts.
 		if ( count( $contact_ids ) > 0 ) {
-			foreach( $contact_ids AS $contact_id ) {
+			foreach ( $contact_ids as $contact_id ) {
 
 				// Get WordPress user ID.
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
@@ -863,8 +873,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 	}
-
-
 
 	/**
 	 * Intercept when a CiviCRM contact is re-added to a group.
@@ -883,10 +891,14 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contacts_rejoined( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
 		// Target our operation.
-		if ( $op != 'edit' ) return;
+		if ( $op != 'edit' ) {
+			return;
+		}
 
 		// Target our object type.
-		if ( $object_name != 'GroupContact' ) return;
+		if ( $object_name != 'GroupContact' ) {
+			return;
+		}
 
 		// Get "Groups" group ID.
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
@@ -898,7 +910,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Loop through added contacts.
 		if ( count( $contact_ids ) > 0 ) {
-			foreach( $contact_ids AS $contact_id ) {
+			foreach ( $contact_ids as $contact_id ) {
 
 				// Get WordPress user ID.
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
@@ -913,11 +925,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
-	//##########################################################################
-
-
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Get a CiviCRM contact ID for a given WordPress user ID.
@@ -935,7 +943,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 		// Make sure CiviCRM file is included.
-		require_once( 'CRM/Core/BAO/UFMatch.php' );
+		require_once 'CRM/Core/BAO/UFMatch.php';
 
 		// Search using CiviCRM's logic.
 		$contact_id = CRM_Core_BAO_UFMatch::getContactId( $user_id );
@@ -964,8 +972,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
 	/**
 	 * Get a CiviCRM contact for a given WordPress user ID.
 	 *
@@ -985,13 +991,13 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 		// Get domain org info.
-		$contact = civicrm_api( 'contact', 'getsingle', array(
+		$contact = civicrm_api( 'contact', 'getsingle', [
 			'version' => 3,
 			'id' => $contact_id,
-		));
+		] );
 
 		// Bail if there's an error.
-		if ( ! empty( $contact['is_error'] ) AND $contact['is_error'] == 1 ) {
+		if ( ! empty( $contact['is_error'] ) && $contact['is_error'] == 1 ) {
 			return false;
 		}
 
@@ -1000,6 +1006,4 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 	}
 
-
-
-} // Class ends.
+}
