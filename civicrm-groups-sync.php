@@ -164,10 +164,10 @@ class CiviCRM_Groups_Sync {
 	 */
 	public function include_files() {
 
-		// Load our classes.
-		require CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-admin.php';
-		require CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-civicrm.php';
-		require CIVICRM_GROUPS_SYNC_PATH . 'includes/civicrm-groups-sync-wordpress.php';
+		// Load our class files.
+		require CIVICRM_GROUPS_SYNC_PATH . 'includes/class-admin.php';
+		require CIVICRM_GROUPS_SYNC_PATH . 'includes/class-civicrm.php';
+		require CIVICRM_GROUPS_SYNC_PATH . 'includes/class-wordpress.php';
 
 	}
 
@@ -178,7 +178,7 @@ class CiviCRM_Groups_Sync {
 	 */
 	public function setup_objects() {
 
-		// Instantiate classes.
+		// Instantiate objects.
 		$this->admin = new CiviCRM_Groups_Sync_Admin( $this );
 		$this->civicrm = new CiviCRM_Groups_Sync_CiviCRM( $this );
 		$this->wordpress = new CiviCRM_Groups_Sync_WordPress( $this );
