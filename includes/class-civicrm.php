@@ -131,7 +131,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function form_group_create_build( $formName, &$form ) {
 
 		// Is this the Group Edit form?
-		if ( $formName != 'CRM_Group_Form_Edit' ) {
+		if ( 'CRM_Group_Form_Edit' !== $formName ) {
 			return;
 		}
 
@@ -139,7 +139,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$civicrm_group = $form->getVar( '_group' );
 
 		// Assign template depending on whether we have a Group.
-		if ( isset( $civicrm_group ) && ! empty( $civicrm_group ) ) {
+		if ( ! empty( $civicrm_group ) ) {
 
 			// It's the Edit Group form.
 
@@ -147,7 +147,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 			$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group->id );
 
 			// Bail if there isn't one.
-			if ( $wp_group_id === false ) {
+			if ( false === $wp_group_id ) {
 				return;
 			}
 
@@ -208,7 +208,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		if ( ! isset( $values['civicrm_groups_sync_create'] ) ) {
 			return;
 		}
-		if ( $values['civicrm_groups_sync_create'] != '1' ) {
+		if ( 1 !== (int) $values['civicrm_groups_sync_create'] ) {
 			return;
 		}
 
@@ -234,12 +234,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_created_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'create' ) {
+		if ( 'create' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) {
+		if ( 'Group' !== $object_name ) {
 			return;
 		}
 
@@ -282,12 +282,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_created_post( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'create' ) {
+		if ( 'create' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) {
+		if ( 'Group' !== $object_name ) {
 			return;
 		}
 
@@ -300,7 +300,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		if ( ! isset( $this->sync_please ) ) {
 			return;
 		}
-		if ( $this->sync_please !== true ) {
+		if ( true !== $this->sync_please ) {
 			return;
 		}
 
@@ -366,12 +366,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_updated_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'edit' ) {
+		if ( 'edit' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) {
+		if ( 'Group' !== $object_name ) {
 			return;
 		}
 
@@ -418,12 +418,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_updated( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'edit' ) {
+		if ( 'edit' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) {
+		if ( 'Group' !== $object_name ) {
 			return;
 		}
 
@@ -466,12 +466,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_deleted_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
 		// Target our operation.
-		if ( $op != 'delete' ) {
+		if ( 'delete' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'Group' ) {
+		if ( 'Group' !== $object_name ) {
 			return;
 		}
 
@@ -729,7 +729,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$civicrm_group = $this->group_get_by_wp_id( $wp_group->group_id );
 
 		// Sanity check.
-		if ( $civicrm_group === false || empty( $civicrm_group['id'] ) ) {
+		if ( false === $civicrm_group || empty( $civicrm_group['id'] ) ) {
 			return false;
 		}
 
@@ -765,7 +765,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 		// --<
-		return absint( $civicrm_group['id'] );
+		return (int) $civicrm_group['id'];
 
 	}
 
@@ -783,7 +783,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$civicrm_group = $this->group_get_by_wp_id( $wp_group_id );
 
 		// Sanity check.
-		if ( $civicrm_group === false || empty( $civicrm_group['id'] ) ) {
+		if ( false === $civicrm_group || empty( $civicrm_group['id'] ) ) {
 			return false;
 		}
 
@@ -812,7 +812,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 		// --<
-		return absint( $civicrm_group['id'] );
+		return (int) $civicrm_group['id'];
 
 	}
 
@@ -925,12 +925,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contacts_added( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
 		// Target our operation.
-		if ( $op != 'create' ) {
+		if ( 'create' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'GroupContact' ) {
+		if ( 'GroupContact' !== $object_name ) {
 			return;
 		}
 
@@ -938,7 +938,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
 
 		// Sanity check.
-		if ( $wp_group_id === false ) {
+		if ( false === $wp_group_id ) {
 			return;
 		}
 
@@ -950,7 +950,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
 
 				// Add User to "Groups" Group.
-				if ( $user_id !== false ) {
+				if ( false !== $user_id ) {
 					$this->plugin->wordpress->group_member_add( $user_id, $wp_group_id );
 				}
 
@@ -972,12 +972,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contacts_deleted( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
 		// Target our operation.
-		if ( $op != 'delete' ) {
+		if ( 'delete' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'GroupContact' ) {
+		if ( 'GroupContact' !== $object_name ) {
 			return;
 		}
 
@@ -985,7 +985,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
 
 		// Sanity check.
-		if ( $wp_group_id === false ) {
+		if ( false === $wp_group_id ) {
 			return;
 		}
 
@@ -997,7 +997,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
 
 				// Delete User from "Groups" Group.
-				if ( $user_id !== false ) {
+				if ( false !== $user_id ) {
 					$this->plugin->wordpress->group_member_delete( $user_id, $wp_group_id );
 				}
 
@@ -1023,12 +1023,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	public function group_contacts_rejoined( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
 		// Target our operation.
-		if ( $op != 'edit' ) {
+		if ( 'edit' !== $op ) {
 			return;
 		}
 
 		// Target our object type.
-		if ( $object_name != 'GroupContact' ) {
+		if ( 'GroupContact' !== $object_name ) {
 			return;
 		}
 
@@ -1036,7 +1036,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
 
 		// Sanity check.
-		if ( $wp_group_id === false ) {
+		if ( false === $wp_group_id ) {
 			return;
 		}
 
@@ -1048,7 +1048,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
 
 				// Add User to "Groups" Group.
-				if ( $user_id !== false ) {
+				if ( false !== $user_id ) {
 					$this->plugin->wordpress->group_member_add( $user_id, $wp_group_id );
 				}
 

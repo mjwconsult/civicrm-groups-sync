@@ -96,7 +96,7 @@ class CiviCRM_Groups_Sync_Admin {
 		$this->upgrade_tasks();
 
 		// Upgrade version if needed.
-		if ( $this->plugin_version != CIVICRM_GROUPS_SYNC_VERSION ) {
+		if ( CIVICRM_GROUPS_SYNC_VERSION !== $this->plugin_version ) {
 			$this->store_version();
 		}
 
@@ -150,7 +150,7 @@ class CiviCRM_Groups_Sync_Admin {
 		*/
 
 		// Save settings if need be.
-		if ( $save === true ) {
+		if ( true === $save ) {
 			$this->settings_save();
 		}
 
@@ -511,11 +511,6 @@ class CiviCRM_Groups_Sync_Admin {
 	 */
 	public function setting_exists( $setting_name = '' ) {
 
-		// Test for empty.
-		if ( $setting_name == '' ) {
-			die( __( 'You must supply a setting to setting_exists()', 'civicrm-groups-sync' ) );
-		}
-
 		// Get existence of setting in array.
 		return array_key_exists( $setting_name, $this->settings );
 
@@ -532,11 +527,6 @@ class CiviCRM_Groups_Sync_Admin {
 	 */
 	public function setting_get( $setting_name = '', $default = false ) {
 
-		// Test for empty.
-		if ( $setting_name == '' ) {
-			die( __( 'You must supply a setting to setting_get()', 'civicrm-groups-sync' ) );
-		}
-
 		// Get setting.
 		return ( array_key_exists( $setting_name, $this->settings ) ) ? $this->settings[ $setting_name ] : $default;
 
@@ -552,11 +542,6 @@ class CiviCRM_Groups_Sync_Admin {
 	 */
 	public function setting_set( $setting_name = '', $value = '' ) {
 
-		// Test for empty.
-		if ( $setting_name == '' ) {
-			die( __( 'You must supply a setting to setting_set()', 'civicrm-groups-sync' ) );
-		}
-
 		// Set setting.
 		$this->settings[ $setting_name ] = $value;
 
@@ -570,11 +555,6 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param string $setting_name The name of the setting.
 	 */
 	public function setting_delete( $setting_name = '' ) {
-
-		// Test for empty.
-		if ( $setting_name == '' ) {
-			die( __( 'You must supply a setting to setting_delete()', 'civicrm-groups-sync' ) );
-		}
 
 		// Unset setting.
 		unset( $this->settings[ $setting_name ] );
@@ -592,11 +572,6 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @return bool $exists Whether or not the option exists.
 	 */
 	public function option_exists( $option_name = '' ) {
-
-		// Test for empty.
-		if ( $option_name == '' ) {
-			die( __( 'You must supply an option to option_exists()', 'civicrm-groups-sync' ) );
-		}
 
 		// Test by getting option with unlikely default.
 		if ( $this->option_get( $option_name, 'fenfgehgefdfdjgrkj' ) == 'fenfgehgefdfdjgrkj' ) {

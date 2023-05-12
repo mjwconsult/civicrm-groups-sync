@@ -479,7 +479,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_group = $this->plugin->civicrm->group_get_by_wp_id( $group_id );
 
 		// Bail if there isn't one.
-		if ( $civicrm_group === false ) {
+		if ( false === $civicrm_group ) {
 			return $content;
 		}
 
@@ -658,7 +658,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_contact_id = $this->plugin->civicrm->contact_id_get_by_user_id( $user_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_contact_id ) || $civicrm_contact_id === false ) {
+		if ( empty( $civicrm_contact_id ) || false === $civicrm_contact_id ) {
 			return;
 		}
 
@@ -666,7 +666,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_group = $this->plugin->civicrm->group_get_by_wp_id( $group_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_group ) || $civicrm_group === false ) {
+		if ( empty( $civicrm_group ) || false === $civicrm_group ) {
 			return;
 		}
 
@@ -689,7 +689,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_contact_id = $this->plugin->civicrm->contact_id_get_by_user_id( $user_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_contact_id ) || $civicrm_contact_id === false ) {
+		if ( empty( $civicrm_contact_id ) || false === $civicrm_contact_id ) {
 			return;
 		}
 
@@ -697,7 +697,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$civicrm_group = $this->plugin->civicrm->group_get_by_wp_id( $group_id );
 
 		// Bail if we don't get one.
-		if ( empty( $civicrm_group ) || $civicrm_group === false ) {
+		if ( empty( $civicrm_group ) || false === $civicrm_group ) {
 			return;
 		}
 
@@ -767,7 +767,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		$user_id = $this->user_id_get_by_contact_id( $contact_id );
 
 		// Bail if we didn't get one.
-		if ( empty( $user_id ) || $user_id === false ) {
+		if ( empty( $user_id ) || false === $user_id ) {
 			return false;
 		}
 

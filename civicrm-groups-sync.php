@@ -142,7 +142,7 @@ class CiviCRM_Groups_Sync {
 
 		// Only do this once.
 		static $done;
-		if ( isset( $done ) && $done === true ) {
+		if ( isset( $done ) && true === $done ) {
 			return;
 		}
 
@@ -371,7 +371,7 @@ function civicrm_groups_sync_action_links( $links, $file ) {
 	}
 
 	// Add settings link.
-	if ( $file == plugin_basename( dirname( __FILE__ ) . '/civicrm-groups-sync.php' ) ) {
+	if ( plugin_basename( dirname( __FILE__ ) . '/civicrm-groups-sync.php' ) === $file ) {
 
 		// Add settings link if not network activated and not viewing network admin.
 		$link = add_query_arg( [ 'page' => 'civicrm_groups_sync_parent' ], admin_url( 'options-general.php' ) );
