@@ -247,12 +247,12 @@ class CiviCRM_Groups_Sync_WordPress {
 		// Construct minimum "Groups" Group params.
 		if ( is_object( $civicrm_group ) ) {
 			$params = [
-				'name' => isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
+				'name'        => isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group->description ) ? $civicrm_group->description : '',
 			];
 		} else {
 			$params = [
-				'name' => isset( $civicrm_group['title'] ) ? $civicrm_group['title'] : __( 'Untitled', 'civicrm-groups-sync' ),
+				'name'        => isset( $civicrm_group['title'] ) ? $civicrm_group['title'] : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group['description'] ) ? $civicrm_group['description'] : '',
 			];
 		}
@@ -280,7 +280,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 			// Init params.
 			$params = [
-				'name' => isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
+				'name'        => isset( $civicrm_group->title ) ? $civicrm_group->title : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group->description ) ? $civicrm_group->description : '',
 			];
 
@@ -291,7 +291,7 @@ class CiviCRM_Groups_Sync_WordPress {
 
 			// Init params.
 			$params = [
-				'name' => isset( $civicrm_group['title'] ) ? $civicrm_group['title'] : __( 'Untitled', 'civicrm-groups-sync' ),
+				'name'        => isset( $civicrm_group['title'] ) ? $civicrm_group['title'] : __( 'Untitled', 'civicrm-groups-sync' ),
 				'description' => isset( $civicrm_group['description'] ) ? $civicrm_group['description'] : '',
 			];
 
@@ -306,7 +306,7 @@ class CiviCRM_Groups_Sync_WordPress {
 		}
 
 		// Get ID from source string.
-		$tmp = explode( 'synced-group-', $source );
+		$tmp         = explode( 'synced-group-', $source );
 		$wp_group_id = isset( $tmp[1] ) ? absint( trim( $tmp[1] ) ) : false;
 
 		// Sanity check.
@@ -582,13 +582,13 @@ class CiviCRM_Groups_Sync_WordPress {
 
 		// Maybe log on failure?
 		if ( ! $success ) {
-			$e = new Exception();
+			$e     = new Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'message' => __( 'Could not add User to Group.', 'civicrm-groups-sync' ),
-				'user_id' => $user_id,
-				'group_id' => $group_id,
+				'method'    => __METHOD__,
+				'message'   => __( 'Could not add User to Group.', 'civicrm-groups-sync' ),
+				'user_id'   => $user_id,
+				'group_id'  => $group_id,
 				'backtrace' => $trace,
 			] );
 		}
@@ -625,13 +625,13 @@ class CiviCRM_Groups_Sync_WordPress {
 
 		// Maybe log on failure?
 		if ( ! $success ) {
-			$e = new Exception();
+			$e     = new Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'message' => __( 'Could not delete User from Group.', 'civicrm-groups-sync' ),
-				'user_id' => $user_id,
-				'group_id' => $group_id,
+				'method'    => __METHOD__,
+				'message'   => __( 'Could not delete User from Group.', 'civicrm-groups-sync' ),
+				'user_id'   => $user_id,
+				'group_id'  => $group_id,
 				'backtrace' => $trace,
 			] );
 		}

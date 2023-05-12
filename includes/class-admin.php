@@ -443,7 +443,7 @@ class CiviCRM_Groups_Sync_Admin {
 		if ( ! empty( $target_url ) ) {
 			$url_array = explode( '&', $target_url );
 			if ( ! empty( $url_array ) ) {
-				$url_raw = str_replace( '&amp;updated=true', '', $url_array[0] );
+				$url_raw    = str_replace( '&amp;updated=true', '', $url_array[0] );
 				$target_url = htmlentities( $url_raw . '&updated=true' );
 			}
 		}

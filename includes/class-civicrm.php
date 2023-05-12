@@ -322,8 +322,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Init params.
 		$params = [
 			'version' => 3,
-			'id' => $civicrm_group->id,
-			'source' => 'synced-group-' . $wp_group_id,
+			'id'      => $civicrm_group->id,
+			'source'  => 'synced-group-' . $wp_group_id,
 		];
 
 		// Update the "source" field to include the ID of the WordPress Group.
@@ -335,17 +335,17 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Log error on failure.
 		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'op' => $op,
+				'method'      => __METHOD__,
+				'op'          => $op,
 				'object_name' => $object_name,
-				'objectId' => $civicrm_group_id,
-				'objectRef' => $civicrm_group,
-				'params' => $params,
-				'result' => $result,
-				'backtrace' => $trace,
+				'objectId'    => $civicrm_group_id,
+				'objectRef'   => $civicrm_group,
+				'params'      => $params,
+				'result'      => $result,
+				'backtrace'   => $trace,
 			] );
 		}
 
@@ -532,7 +532,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Init params.
 		$params = [
 			'version' => 3,
-			'id' => $group_id,
+			'id'      => $group_id,
 		];
 
 		// Call the CiviCRM API.
@@ -577,7 +577,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Init params.
 		$params = [
 			'version' => 3,
-			'source' => 'synced-group-' . $wp_group_id,
+			'source'  => 'synced-group-' . $wp_group_id,
 		];
 
 		// Call the CiviCRM API.
@@ -622,7 +622,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Init params.
 		$params = [
 			'version' => 3,
-			'id' => $group_id,
+			'id'      => $group_id,
 		];
 
 		// Call the CiviCRM API.
@@ -647,7 +647,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		}
 
 		// Get ID from source string.
-		$tmp = explode( 'synced-group-', $civicrm_group['source'] );
+		$tmp         = explode( 'synced-group-', $civicrm_group['source'] );
 		$wp_group_id = isset( $tmp[1] ) ? (int) trim( $tmp[1] ) : false;
 
 		// Return the ID of the "Groups" Group.
@@ -676,12 +676,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Init params.
 		$params = [
-			'version' => 3,
-			'name' => wp_unslash( $wp_group->name ),
-			'title' => wp_unslash( $wp_group->name ),
+			'version'     => 3,
+			'name'        => wp_unslash( $wp_group->name ),
+			'title'       => wp_unslash( $wp_group->name ),
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
-			'group_type' => [ 1 => 1 ],
-			'source' => 'synced-group-' . $wp_group->group_id,
+			'group_type'  => [ 1 => 1 ],
+			'source'      => 'synced-group-' . $wp_group->group_id,
 		];
 
 		// Create the synced CiviCRM Group.
@@ -693,12 +693,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Log error and bail on failure.
 		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'params' => $params,
-				'result' => $result,
+				'method'    => __METHOD__,
+				'params'    => $params,
+				'result'    => $result,
 				'backtrace' => $trace,
 			] );
 			return false;
@@ -737,10 +737,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Init params.
 		$params = [
-			'version' => 3,
-			'id' => $civicrm_group['id'],
-			'name' => wp_unslash( $wp_group->name ),
-			'title' => wp_unslash( $wp_group->name ),
+			'version'     => 3,
+			'id'          => $civicrm_group['id'],
+			'name'        => wp_unslash( $wp_group->name ),
+			'title'       => wp_unslash( $wp_group->name ),
 			'description' => isset( $wp_group->description ) ? wp_unslash( $wp_group->description ) : '',
 		];
 
@@ -752,12 +752,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Log error and bail on failure.
 		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'params' => $params,
-				'result' => $result,
+				'method'    => __METHOD__,
+				'params'    => $params,
+				'result'    => $result,
 				'backtrace' => $trace,
 			] );
 			return false;
@@ -789,7 +789,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Init params.
 		$params = [
 			'version' => 3,
-			'id' => $civicrm_group['id'],
+			'id'      => $civicrm_group['id'],
 		];
 
 		// Delete the synced CiviCRM Group.
@@ -797,15 +797,15 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Log error and bail on failure.
 		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'wp_group_id' => $wp_group_id,
+				'method'        => __METHOD__,
+				'wp_group_id'   => $wp_group_id,
 				'civicrm_group' => $civicrm_group,
-				'params' => $params,
-				'result' => $result,
-				'backtrace' => $trace,
+				'params'        => $params,
+				'result'        => $result,
+				'backtrace'     => $trace,
 			] );
 			return false;
 		}
@@ -833,10 +833,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Init params.
 		$params = [
-			'version' => 3,
-			'group_id' => $civicrm_group_id,
+			'version'    => 3,
+			'group_id'   => $civicrm_group_id,
 			'contact_id' => $civicrm_contact_id,
-			'status' => 'Added',
+			'status'     => 'Added',
 		];
 
 		// Call API.
@@ -847,12 +847,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Log error and bail on failure.
 		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'params' => $params,
-				'result' => $result,
+				'method'    => __METHOD__,
+				'params'    => $params,
+				'result'    => $result,
 				'backtrace' => $trace,
 			] );
 			return false;
@@ -879,10 +879,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Init params.
 		$params = [
-			'version' => 3,
-			'group_id' => $civicrm_group_id,
+			'version'    => 3,
+			'group_id'   => $civicrm_group_id,
 			'contact_id' => $civicrm_contact_id,
-			'status' => 'Removed',
+			'status'     => 'Removed',
 		];
 
 		// Call API.
@@ -893,12 +893,12 @@ class CiviCRM_Groups_Sync_CiviCRM {
 
 		// Log error and bail on failure.
 		if ( isset( $result['is_error'] ) && 1 === (int) $result['is_error'] ) {
-			$e = new \Exception();
+			$e     = new \Exception();
 			$trace = $e->getTraceAsString();
 			$this->plugin->log_error( [
-				'method' => __METHOD__,
-				'params' => $params,
-				'result' => $result,
+				'method'    => __METHOD__,
+				'params'    => $params,
+				'result'    => $result,
 				'backtrace' => $trace,
 			] );
 			return false;
@@ -1129,7 +1129,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Init params.
 		$params = [
 			'version' => 3,
-			'id' => $contact_id,
+			'id'      => $contact_id,
 		];
 
 		// Call the CiviCRM API.

@@ -179,8 +179,8 @@ class CiviCRM_Groups_Sync {
 	public function setup_objects() {
 
 		// Instantiate objects.
-		$this->admin = new CiviCRM_Groups_Sync_Admin( $this );
-		$this->civicrm = new CiviCRM_Groups_Sync_CiviCRM( $this );
+		$this->admin     = new CiviCRM_Groups_Sync_Admin( $this );
+		$this->civicrm   = new CiviCRM_Groups_Sync_CiviCRM( $this );
 		$this->wordpress = new CiviCRM_Groups_Sync_WordPress( $this );
 
 	}
@@ -378,7 +378,7 @@ function civicrm_groups_sync_action_links( $links, $file ) {
 		//$links[] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Settings', 'civicrm-groups-sync' ) . '</a>';
 
 		// Always add Paypal link.
-		$paypal = 'https://www.paypal.me/interactivist';
+		$paypal  = 'https://www.paypal.me/interactivist';
 		$links[] = '<a href="' . $paypal . '" target="_blank">' . __( 'Donate!', 'civicrm-groups-sync' ) . '</a>';
 
 	}
