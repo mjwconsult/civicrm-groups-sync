@@ -104,11 +104,6 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 */
 	public function register_form_directory( &$config ) {
 
-		// Kick out if no CiviCRM.
-		if ( ! $this->plugin->is_civicrm_initialised() ) {
-			return;
-		}
-
 		// Get template instance.
 		$template = CRM_Core_Smarty::singleton();
 
