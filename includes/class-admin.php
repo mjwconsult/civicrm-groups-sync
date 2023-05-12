@@ -503,7 +503,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param string $setting_name The name of the setting.
 	 * @return bool Whether or not the setting exists.
 	 */
-	public function setting_exists( $setting_name = '' ) {
+	public function setting_exists( $setting_name ) {
 
 		// Get existence of setting in array.
 		return array_key_exists( $setting_name, $this->settings );
@@ -519,7 +519,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param mixed  $default The default value if the setting does not exist.
 	 * @return mixed The setting or the default.
 	 */
-	public function setting_get( $setting_name = '', $default = false ) {
+	public function setting_get( $setting_name, $default = false ) {
 
 		// Get setting.
 		return ( array_key_exists( $setting_name, $this->settings ) ) ? $this->settings[ $setting_name ] : $default;
@@ -534,7 +534,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param string $setting_name The name of the setting.
 	 * @param mixed  $value The value of the setting.
 	 */
-	public function setting_set( $setting_name = '', $value = '' ) {
+	public function setting_set( $setting_name, $value = '' ) {
 
 		// Set setting.
 		$this->settings[ $setting_name ] = $value;
@@ -548,7 +548,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @param string $setting_name The name of the setting.
 	 */
-	public function setting_delete( $setting_name = '' ) {
+	public function setting_delete( $setting_name ) {
 
 		// Unset setting.
 		unset( $this->settings[ $setting_name ] );
@@ -565,10 +565,10 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param string $option_name The name of the option.
 	 * @return bool $exists Whether or not the option exists.
 	 */
-	public function option_exists( $option_name = '' ) {
+	public function option_exists( $option_name ) {
 
 		// Test by getting option with unlikely default.
-		if ( $this->option_get( $option_name, 'fenfgehgefdfdjgrkj' ) == 'fenfgehgefdfdjgrkj' ) {
+		if ( 'fenfgehgefdfdjgrkj' === $this->option_get( $option_name, 'fenfgehgefdfdjgrkj' ) ) {
 			return false;
 		} else {
 			return true;
@@ -585,7 +585,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param string $default The default value of the option if it has no value.
 	 * @return mixed $value the value of the option.
 	 */
-	public function option_get( $option_name = '', $default = false ) {
+	public function option_get( $option_name, $default = false ) {
 
 		// Get option.
 		$value = get_option( $option_name, $default );
@@ -604,7 +604,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param mixed  $value The value to set the option to.
 	 * @return bool $success True if the value of the option was successfully updated.
 	 */
-	public function option_set( $option_name = '', $value = '' ) {
+	public function option_set( $option_name, $value = '' ) {
 
 		// Update option.
 		return update_option( $option_name, $value );
@@ -619,7 +619,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @param string $option_name The name of the option.
 	 * @return bool $success True if the option was successfully deleted.
 	 */
-	public function option_delete( $option_name = '' ) {
+	public function option_delete( $option_name ) {
 
 		// Delete option.
 		return delete_option( $option_name );
