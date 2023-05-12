@@ -226,10 +226,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_group The array of CiviCRM Group data.
+	 * @param array   $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_created_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
@@ -274,10 +274,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_group The array of CiviCRM Group data.
+	 * @param array   $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_created_post( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
 
@@ -358,10 +358,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1.2
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_group The array of CiviCRM Group data.
+	 * @param array   $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_updated_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
@@ -410,10 +410,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_group The array of CiviCRM Group data.
+	 * @param array   $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_updated( $op, $object_name, $civicrm_group_id, $civicrm_group ) {
 
@@ -458,10 +458,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_group The array of CiviCRM Group data.
+	 * @param array   $civicrm_group The array of CiviCRM Group data.
 	 */
 	public function group_deleted_pre( $op, $object_name, $civicrm_group_id, &$civicrm_group ) {
 
@@ -484,8 +484,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1.1
 	 *
-	 * @param int $group_id The numeric ID of the CiviCRM Group.
-	 * @return str $group_url The CiviCRM Group's admin URL.
+	 * @param integer $group_id The numeric ID of the CiviCRM Group.
+	 * @return string $group_url The CiviCRM Group's admin URL.
 	 */
 	public function group_get_url( $group_id ) {
 
@@ -502,9 +502,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		 *
 		 * @since 0.1.1
 		 *
-		 * @param str $group_url The existing URL.
-		 * @param int $group_id The numeric ID of the CiviCRM Group.
-		 * @return str $group_url The modified URL.
+		 * @param string $group_url The existing URL.
+		 * @param integer $group_id The numeric ID of the CiviCRM Group.
 		 */
 		return apply_filters( 'civicrm_groups_sync_group_get_url_civi', $group_url, $group_id );
 
@@ -517,7 +516,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The numeric ID of the Group.
+	 * @param integer $group_id The numeric ID of the Group.
 	 * @return array|bool $group The array of CiviCRM Group data, or false on failure.
 	 */
 	public function group_get_by_id( $group_id ) {
@@ -562,7 +561,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $wp_group_id The numeric ID of the "Groups" Group.
+	 * @param integer $wp_group_id The numeric ID of the "Groups" Group.
 	 * @return array|bool $group The array of CiviCRM Group data, or false on failure.
 	 */
 	public function group_get_by_wp_id( $wp_group_id ) {
@@ -607,8 +606,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The numeric ID of the CiviCRM Group.
-	 * @return int|bool $wp_group_id The ID of the "Groups" Group, or false on failure.
+	 * @param integer $group_id The numeric ID of the CiviCRM Group.
+	 * @return integer|bool $wp_group_id The ID of the "Groups" Group, or false on failure.
 	 */
 	public function group_get_wp_id_by_civicrm_id( $group_id ) {
 
@@ -662,7 +661,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 * @since 0.1
 	 *
 	 * @param object $wp_group The "Groups" Group object.
-	 * @return int|bool $group_id The ID of the Group, or false on failure.
+	 * @return integer|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_create_from_wp_group( $wp_group ) {
 
@@ -716,7 +715,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 * @since 0.1
 	 *
 	 * @param object $wp_group The "Groups" Group object.
-	 * @return int|bool $group_id The ID of the Group, or false on failure.
+	 * @return integer|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_update_from_wp_group( $wp_group ) {
 
@@ -774,8 +773,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $wp_group_id The numeric ID of the "Groups" Group.
-	 * @return int|bool $group_id The ID of the Group, or false on failure.
+	 * @param integer $wp_group_id The numeric ID of the "Groups" Group.
+	 * @return integer|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_delete_by_wp_id( $wp_group_id ) {
 
@@ -824,7 +823,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 * @since 0.1
 	 *
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_contact_id The numeric ID of a CiviCRM Contact.
+	 * @param array   $civicrm_contact_id The numeric ID of a CiviCRM Contact.
 	 * @return array|bool $result The array of GroupContact data, or false on failure.
 	 */
 	public function group_contact_create( $civicrm_group_id, $civicrm_contact_id ) {
@@ -870,7 +869,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 * @since 0.1
 	 *
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $civicrm_contact_id The numeric ID of a CiviCRM Contact.
+	 * @param array   $civicrm_contact_id The numeric ID of a CiviCRM Contact.
 	 * @return array|bool $result The array of GroupContact data, or false on failure.
 	 */
 	public function group_contact_delete( $civicrm_group_id, $civicrm_contact_id ) {
@@ -917,10 +916,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $contact_ids The array of CiviCRM Contact IDs.
+	 * @param array   $contact_ids The array of CiviCRM Contact IDs.
 	 */
 	public function group_contacts_added( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
@@ -964,10 +963,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $contact_ids Array of CiviCRM Contact IDs.
+	 * @param array   $contact_ids Array of CiviCRM Contact IDs.
 	 */
 	public function group_contacts_deleted( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
@@ -1015,10 +1014,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param string $op The type of database operation.
-	 * @param string $object_name The type of object.
+	 * @param string  $op The type of database operation.
+	 * @param string  $object_name The type of object.
 	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
-	 * @param array $contact_ids Array of CiviCRM Contact IDs.
+	 * @param array   $contact_ids Array of CiviCRM Contact IDs.
 	 */
 	public function group_contacts_rejoined( $op, $object_name, $civicrm_group_id, $contact_ids ) {
 
@@ -1064,8 +1063,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The numeric WordPress User ID.
-	 * @return int|bool $contact_id The CiviCRM Contact ID, or false on failure.
+	 * @param integer $user_id The numeric WordPress User ID.
+	 * @return integer|bool $contact_id The CiviCRM Contact ID, or false on failure.
 	 */
 	public function contact_id_get_by_user_id( $user_id ) {
 
@@ -1093,9 +1092,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		 *
 		 * @since 0.1
 		 *
-		 * @param int|bool $contact_id The numeric ID of the CiviCRM Contact, or false on failure.
-		 * @param int $user_id The numeric ID of the WordPress User.
-		 * @return int|bool $contact_id The numeric ID of the CiviCRM Contact, or false on failure.
+		 * @param integer|bool $contact_id The numeric ID of the CiviCRM Contact, or false on failure.
+		 * @param integer $user_id The numeric ID of the WordPress User.
 		 */
 		$contact_id = apply_filters( 'civicrm_groups_sync_contact_id_get_by_user_id', $contact_id, $user_id );
 
@@ -1109,7 +1107,7 @@ class CiviCRM_Groups_Sync_CiviCRM {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The numeric WordPress User ID.
+	 * @param integer $user_id The numeric WordPress User ID.
 	 * @return array|bool $contact The CiviCRM Contact data, or false on failure.
 	 */
 	public function contact_get_by_user_id( $user_id ) {

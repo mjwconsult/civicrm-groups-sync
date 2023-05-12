@@ -349,8 +349,8 @@ add_action( 'plugins_loaded', 'civicrm_groups_sync' );
  *
  * @since 0.1
  *
- * @param array $links The existing links array.
- * @param str $file The name of the plugin file.
+ * @param array  $links The existing links array.
+ * @param string $file The name of the plugin file.
  * @return array $links The modified links array.
  */
 function civicrm_groups_sync_action_links( $links, $file ) {

@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 			 * @since 0.1
 			 *
 			 * @param array $urls The array of subpage URLs.
-			 * @param str The key of the active tab in the subpage URLs array.
+			 * @param string The key of the active tab in the subpage URLs array.
 			 */
 			do_action( 'civicrm_groups_sync_settings_nav_tabs', $urls, 'settings' );
 

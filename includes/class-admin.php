@@ -34,7 +34,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 * @access public
-	 * @var str $plugin_version The plugin version.
+	 * @var string $plugin_version The plugin version.
 	 */
 	public $plugin_version;
 
@@ -52,7 +52,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 * @access public
-	 * @var str $parent_page The parent page.
+	 * @var string $parent_page The parent page.
 	 */
 	public $parent_page;
 
@@ -61,7 +61,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 * @access public
-	 * @var str $settings_page The settings page.
+	 * @var string $settings_page The settings page.
 	 */
 	public $settings_page;
 
@@ -195,8 +195,7 @@ class CiviCRM_Groups_Sync_Admin {
 		 *
 		 * @since 0.1
 		 *
-		 * @param str The default capability for access to settings page.
-		 * @return str The modified capability for access to settings page.
+		 * @param string The default capability for access to settings page.
 		 */
 		$capability = apply_filters( 'civicrm_groups_sync_page_settings_cap', 'manage_options' );
 
@@ -271,7 +270,6 @@ class CiviCRM_Groups_Sync_Admin {
 		 * @since 0.1
 		 *
 		 * @param array $subpages The existing list of subpages.
-		 * @return array $subpages The modified list of subpages.
 		 */
 		$subpages = apply_filters( 'civicrm_groups_sync_subpages', $subpages );
 
@@ -370,8 +368,7 @@ class CiviCRM_Groups_Sync_Admin {
 		 *
 		 * @since 0.1
 		 *
-		 * @param str The default capability for access to settings page.
-		 * @return str The modified capability for access to settings page.
+		 * @param string The default capability for access to settings page.
 		 */
 		$capability = apply_filters( 'civicrm_groups_sync_page_settings_cap', 'manage_options' );
 
@@ -389,7 +386,6 @@ class CiviCRM_Groups_Sync_Admin {
 		 * @since 0.1
 		 *
 		 * @param bool False by default - do not show tabs.
-		 * @return bool Modified flag for whether or not to show tabs.
 		 */
 		$show_tabs = apply_filters( 'civicrm_groups_sync_show_tabs', false );
 
@@ -424,7 +420,6 @@ class CiviCRM_Groups_Sync_Admin {
 		 * @since 0.1
 		 *
 		 * @param array $urls The existing list of URLs.
-		 * @return array $urls The modified list of URLs.
 		 */
 		$this->urls = apply_filters( 'civicrm_groups_sync_page_urls', $this->urls );
 
@@ -478,7 +473,6 @@ class CiviCRM_Groups_Sync_Admin {
 		 * @since 0.1.2
 		 *
 		 * @param array $settings The array of default settings.
-		 * @return array $settings The modified array of default settings.
 		 */
 		$settings = apply_filters( 'civicrm_groups_sync_settings_default', $settings );
 
@@ -522,7 +516,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @since 0.1
 	 *
 	 * @param string $setting_name The name of the setting.
-	 * @param mixed $default The default value if the setting does not exist.
+	 * @param mixed  $default The default value if the setting does not exist.
 	 * @return mixed The setting or the default.
 	 */
 	public function setting_get( $setting_name = '', $default = false ) {
@@ -538,7 +532,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 * @since 0.1
 	 *
 	 * @param string $setting_name The name of the setting.
-	 * @param mixed $value The value of the setting.
+	 * @param mixed  $value The value of the setting.
 	 */
 	public function setting_set( $setting_name = '', $value = '' ) {
 
@@ -568,7 +562,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 *
-	 * @param str $option_name The name of the option.
+	 * @param string $option_name The name of the option.
 	 * @return bool $exists Whether or not the option exists.
 	 */
 	public function option_exists( $option_name = '' ) {
@@ -587,8 +581,8 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 *
-	 * @param str $option_name The name of the option.
-	 * @param str $default The default value of the option if it has no value.
+	 * @param string $option_name The name of the option.
+	 * @param string $default The default value of the option if it has no value.
 	 * @return mixed $value the value of the option.
 	 */
 	public function option_get( $option_name = '', $default = false ) {
@@ -606,8 +600,8 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 *
-	 * @param str $option_name The name of the option.
-	 * @param mixed $value The value to set the option to.
+	 * @param string $option_name The name of the option.
+	 * @param mixed  $value The value to set the option to.
 	 * @return bool $success True if the value of the option was successfully updated.
 	 */
 	public function option_set( $option_name = '', $value = '' ) {
@@ -622,7 +616,7 @@ class CiviCRM_Groups_Sync_Admin {
 	 *
 	 * @since 0.1
 	 *
-	 * @param str $option_name The name of the option.
+	 * @param string $option_name The name of the option.
 	 * @return bool $success True if the option was successfully deleted.
 	 */
 	public function option_delete( $option_name = '' ) {

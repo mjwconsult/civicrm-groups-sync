@@ -103,7 +103,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 * @since 0.1
 	 *
 	 * @param array $params The params used to create the Group.
-	 * @return int|bool $group_id The ID of the Group, or false on failure.
+	 * @return integer|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_create( $params ) {
 
@@ -135,7 +135,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 * @since 0.1
 	 *
 	 * @param array $params The params used to update the Group.
-	 * @return int|bool $group_id The ID of the Group, or false on failure.
+	 * @return integer|bool $group_id The ID of the Group, or false on failure.
 	 */
 	public function group_update( $params ) {
 
@@ -158,8 +158,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The ID of the Group to delete.
-	 * @return int|bool $group_id The ID of the deleted Group, or false on failure.
+	 * @param integer $group_id The ID of the Group to delete.
+	 * @return integer|bool $group_id The ID of the deleted Group, or false on failure.
 	 */
 	public function group_delete( $group_id ) {
 
@@ -184,7 +184,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The ID of the new Group.
+	 * @param integer $group_id The ID of the new Group.
 	 */
 	public function group_created( $group_id ) {
 
@@ -206,7 +206,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The ID of the updated Group.
+	 * @param integer $group_id The ID of the updated Group.
 	 */
 	public function group_updated( $group_id ) {
 
@@ -223,7 +223,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The ID of the deleted Group.
+	 * @param integer $group_id The ID of the deleted Group.
 	 */
 	public function group_deleted( $group_id ) {
 
@@ -240,7 +240,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 * @since 0.1
 	 *
 	 * @param object|array $civicrm_group The CiviCRM Group data.
-	 * @return int|bool $group_id The ID of the "Groups" Group, or false on failure.
+	 * @return integer|bool $group_id The ID of the "Groups" Group, or false on failure.
 	 */
 	public function group_create_from_civicrm_group( $civicrm_group ) {
 
@@ -271,7 +271,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 * @since 0.1
 	 *
 	 * @param object|array $civicrm_group The CiviCRM Group data.
-	 * @return int|bool $group_id The ID of the "Groups" Group, or false on failure.
+	 * @return integer|bool $group_id The ID of the "Groups" Group, or false on failure.
 	 */
 	public function group_update_from_civicrm_group( $civicrm_group ) {
 
@@ -330,8 +330,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $civicrm_group_id The ID of the CiviCRM Group.
-	 * @return int|bool $group_id The ID of the deleted "Groups" Group, or false on failure.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @return integer|bool $group_id The ID of the deleted "Groups" Group, or false on failure.
 	 */
 	public function group_delete_by_civicrm_group_id( $civicrm_group_id ) {
 
@@ -358,8 +358,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1.1
 	 *
-	 * @param int $group_id The numeric ID of the "Groups" Group.
-	 * @return str $group_url The "Groups" Group's admin URL.
+	 * @param integer $group_id The numeric ID of the "Groups" Group.
+	 * @return string $group_url The "Groups" Group's admin URL.
 	 */
 	public function group_get_url( $group_id ) {
 
@@ -371,9 +371,8 @@ class CiviCRM_Groups_Sync_WordPress {
 		 *
 		 * @since 0.1.1
 		 *
-		 * @param str $group_url The existing URL.
-		 * @param int $group_id The numeric ID of the CiviCRM Group.
-		 * @return str $group_url The modified URL.
+		 * @param string $group_url The existing URL.
+		 * @param integer $group_id The numeric ID of the CiviCRM Group.
 		 */
 		return apply_filters( 'civicrm_groups_sync_group_get_url_wp', $group_url, $group_id );
 
@@ -386,7 +385,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $civicrm_group_id The ID of the CiviCRM Group.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
 	 * @return array|bool $wp_group The "Groups" Group data, or false on failure.
 	 */
 	public function group_get_by_civicrm_id( $civicrm_group_id ) {
@@ -412,8 +411,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $civicrm_group_id The ID of the CiviCRM Group.
-	 * @return int|bool $group_id The "Groups" Group ID, or false on failure.
+	 * @param integer $civicrm_group_id The ID of the CiviCRM Group.
+	 * @return integer|bool $group_id The "Groups" Group ID, or false on failure.
 	 */
 	public function group_get_wp_id_by_civicrm_id( $civicrm_group_id ) {
 
@@ -442,8 +441,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param str $content The existing content to be inserted after the default fields.
-	 * @return str $content The modified content to be inserted after the default fields.
+	 * @param string $content The existing content to be inserted after the default fields.
+	 * @return string $content The modified content to be inserted after the default fields.
 	 */
 	public function form_add_filter( $content ) {
 
@@ -469,9 +468,9 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param str $content The existing content to be inserted after the default fields.
-	 * @param int $group_id The numeric ID of the Group.
-	 * @return str $content The modified content to be inserted after the default fields.
+	 * @param string  $content The existing content to be inserted after the default fields.
+	 * @param integer $group_id The numeric ID of the Group.
+	 * @return string $content The modified content to be inserted after the default fields.
 	 */
 	public function form_edit_filter( $content, $group_id ) {
 
@@ -535,7 +534,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $group_id The numeric ID of the Group.
+	 * @param integer $group_id The numeric ID of the Group.
 	 */
 	public function form_submitted( $group_id ) {
 
@@ -558,8 +557,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The ID of the WordPress User to add to the Group.
-	 * @param int $group_id The ID of the "Groups" Group.
+	 * @param integer $user_id The ID of the WordPress User to add to the Group.
+	 * @param integer $group_id The ID of the "Groups" Group.
 	 * @return bool $success True on success, false otherwise.
 	 */
 	public function group_member_add( $user_id, $group_id ) {
@@ -604,8 +603,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The ID of the WordPress User to delete from the Group.
-	 * @param int $group_id The ID of the "Groups" Group.
+	 * @param integer $user_id The ID of the WordPress User to delete from the Group.
+	 * @param integer $group_id The ID of the "Groups" Group.
 	 * @return bool $success True on success, false otherwise.
 	 */
 	public function group_member_delete( $user_id, $group_id ) {
@@ -649,8 +648,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The ID of the WordPress User added to the Group.
-	 * @param int $group_id The ID of the "Groups" Group.
+	 * @param integer $user_id The ID of the WordPress User added to the Group.
+	 * @param integer $group_id The ID of the "Groups" Group.
 	 */
 	public function group_member_added( $user_id, $group_id ) {
 
@@ -680,8 +679,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $user_id The ID of the WordPress User added to the Group.
-	 * @param int $group_id The ID of the "Groups" Group.
+	 * @param integer $user_id The ID of the WordPress User added to the Group.
+	 * @param integer $group_id The ID of the "Groups" Group.
 	 */
 	public function group_member_deleted( $user_id, $group_id ) {
 
@@ -713,8 +712,8 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $contact_id The numeric CiviCRM Contact ID.
-	 * @return int|bool $user The WordPress User ID, or false on failure.
+	 * @param integer $contact_id The numeric CiviCRM Contact ID.
+	 * @return integer|bool $user The WordPress User ID, or false on failure.
 	 */
 	public function user_id_get_by_contact_id( $contact_id ) {
 
@@ -742,9 +741,8 @@ class CiviCRM_Groups_Sync_WordPress {
 		 *
 		 * @since 0.1
 		 *
-		 * @param int|bool $user_id The numeric ID of the WordPress User, or false on failure.
-		 * @param int $contact_id The numeric ID of the CiviCRM Contact.
-		 * @return int|bool $user_id The numeric ID of the WordPress User, or false on failure.
+		 * @param integer|bool $user_id The numeric ID of the WordPress User.
+		 * @param integer $contact_id The numeric ID of the CiviCRM Contact.
 		 */
 		$user_id = apply_filters( 'civicrm_groups_sync_user_id_get_by_contact_id', $user_id, $contact_id );
 
@@ -758,7 +756,7 @@ class CiviCRM_Groups_Sync_WordPress {
 	 *
 	 * @since 0.1
 	 *
-	 * @param int $contact_id The numeric CiviCRM Contact ID.
+	 * @param integer $contact_id The numeric CiviCRM Contact ID.
 	 * @return WP_User|bool $user The WordPress User object, or false on failure.
 	 */
 	public function user_get_by_contact_id( $contact_id ) {
