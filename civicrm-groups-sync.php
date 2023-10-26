@@ -152,6 +152,11 @@ class CiviCRM_Groups_Sync {
 		$this->setup_objects();
 		$this->register_hooks();
 
+		// Schedule sync of contacts / posts.
+		if ( ! wp_next_scheduled( 'civicrm_groups_scheduled_sync' ) && ! wp_installing() ) {
+			wp_schedule_event( time(), 'daily', 'civicrm_groups_scheduled_sync' );
+		}
+
 		// We're done.
 		$done = true;
 
@@ -390,3 +395,11 @@ function civicrm_groups_sync_action_links( $links, $file ) {
 
 // Add filter for the above.
 add_filter( 'plugin_action_links', 'civicrm_groups_sync_action_links', 10, 2 );
+
+add_action( 'civicrm_groups_scheduled_sync', 'civicrm_groups_scheduled_sync' );
+
+function civicrm_groups_scheduled_sync() {
+	\Civi::log()->debug('civicrm_groups_scheduled_sync');
+	$civicrm_groups_sync = civicrm_groups_sync();
+	$civicrm_groups_sync->civicrm->group_sync_all_to_wp();
+}

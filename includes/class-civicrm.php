@@ -1201,10 +1201,10 @@ class CiviCRM_Groups_Sync_CiviCRM {
 				}
 			}
 			if (!empty($added)) {
-				\Civi::log()->debug('manualsync: Added contacts to group (user_id=>contact_id). ' . print_r($added, TRUE));
+				\Civi::log()->debug('civicrm-groups-sync: ' . $civicrm_group_id . ': Added contacts to group (user_id=>contact_id). ' . print_r($added, TRUE));
 			}
 			if (!empty($noUserID)) {
-				\Civi::log()->debug('civicrm-groups-sync: No user ID. Not adding contacts to group: ' . print_r($noUserID, TRUE));
+				\Civi::log()->debug('civicrm-groups-sync: ' . $civicrm_group_id . ': No user ID. Not adding contacts to group: ' . print_r($noUserID, TRUE));
 			}
 
 			// Now delete any users in group that are not in the CiviCRM group
@@ -1233,11 +1233,23 @@ class CiviCRM_Groups_Sync_CiviCRM {
 						if ( false !== $user_id ) {
 							// Will automatically skip if already in group
 							$this->plugin->wordpress->group_member_delete( $user_id, $wp_group_id );
-							\Civi::log()->debug('manualsync: deleting user_id: ' . $user_id . ' from group: ' . $wp_group_id);
+							\Civi::log()->debug('civicrm-groups-sync: ' . $civicrm_group_id . ': deleting user_id: ' . $user_id . ' from group: ' . $wp_group_id);
 						}
 					}
 				}
 			}
+		}
+	}
+
+	public function group_sync_all_to_wp() {
+		// Get list of groups that should be synced
+		$groups = \Civi\Api4\Group::get(FALSE)
+			->addWhere('source', 'LIKE', '%synced-group%')
+			->execute()
+			->indexBy('id');
+		foreach ($groups as $group) {
+			\Civi::log()->debug('civicrm-groups-sync: Sync group: ' . $group['id']);
+			$this->group_sync_to_wp($group['id']);
 		}
 	}
 
