@@ -57,7 +57,7 @@ class CiviCRM_Groups_Sync {
 	 *
 	 * @since 0.1
 	 * @access public
-	 * @var object $admin The Admin utilities object.
+	 * @var CiviCRM_Groups_Sync_Admin $admin The Admin utilities object.
 	 */
 	public $admin;
 
@@ -66,7 +66,7 @@ class CiviCRM_Groups_Sync {
 	 *
 	 * @since 0.1
 	 * @access public
-	 * @var object $civicrm The CiviCRM utilities object.
+	 * @var CiviCRM_Groups_Sync_CiviCRM $civicrm The CiviCRM utilities object.
 	 */
 	public $civicrm;
 
@@ -75,7 +75,7 @@ class CiviCRM_Groups_Sync {
 	 *
 	 * @since 0.1
 	 * @access public
-	 * @var object $wordpress The WordPress utilities object.
+	 * @var CiviCRM_Groups_Sync_WordPress $wordpress The WordPress utilities object.
 	 */
 	public $wordpress;
 
