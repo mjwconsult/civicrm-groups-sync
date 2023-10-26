@@ -451,6 +451,8 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		// Update the "Groups" Group from CiviCRM Group data.
 		$wp_group_id = $this->plugin->wordpress->group_update_from_civicrm_group( $civicrm_group_data );
 
+		$this->plugin->civicrm->group_sync_to_wp( $civicrm_group_id );
+
 	}
 
 	/**
@@ -1152,5 +1154,93 @@ class CiviCRM_Groups_Sync_CiviCRM {
 		return $contact;
 
 	}
+
+	public function group_sync_to_wp( $civicrm_group_id ) {
+
+			global $wpdb;
+
+		  // avoid nonsense requests
+			if ( empty( $civicrm_group_id )) {
+				return;
+			}
+
+		// Get "Groups" Group ID.
+		$wp_group_id = $this->group_get_wp_id_by_civicrm_id( $civicrm_group_id );
+
+		// Sanity check.
+		if ( false === $wp_group_id ) {
+			return;
+		}
+
+		// Get the list of contact IDs in the group
+		$groupContacts = \Civi\Api4\GroupContact::get(FALSE)
+			->addWhere('group_id', '=', $civicrm_group_id)
+			->addWhere('status:name', '=', 'Added')
+			->execute()
+			->indexBy('contact_id');
+		$groupContactContactIDs = array_keys($groupContacts->getArrayCopy());
+
+		// Loop through added Contacts and add them to the group.
+		if ( $groupContacts->count() > 0 ) {
+			foreach ( $groupContactContactIDs as $contact_id ) {
+
+				// Get WordPress User ID.
+				$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contact_id );
+				if (empty($user_id)) {
+					$noUserID[] = $contact_id;
+				}
+				else {
+					// Add User to "Groups" Group.
+					// Will automatically skip if already in group
+					// Bail if they are already a Group Member.
+					if ( Groups_User_Group::read( $user_id, $wp_group_id ) ) {
+						continue;
+					}
+					$this->plugin->wordpress->group_member_add( $user_id, $wp_group_id );
+					$added[$user_id] = $contact_id;
+				}
+			}
+			if (!empty($added)) {
+				\Civi::log()->debug('manualsync: Added contacts to group (user_id=>contact_id). ' . print_r($added, TRUE));
+			}
+			if (!empty($noUserID)) {
+				\Civi::log()->debug('civicrm-groups-sync: No user ID. Not adding contacts to group: ' . print_r($noUserID, TRUE));
+			}
+
+			// Now delete any users in group that are not in the CiviCRM group
+			// to allow deletion of an entry after a user has been deleted,
+			// we don't check if the user exists
+			$user_group_table = _groups_get_tablename( 'user_group' );
+			// get rid of it
+			$usersInGroup = $wpdb->get_results( $wpdb->prepare(
+				"SELECT user_id FROM $user_group_table WHERE group_id = %d",
+				Groups_Utility::id( $wp_group_id )
+			),ARRAY_A );
+
+			if (!empty($usersInGroup) && is_array($usersInGroup)) {
+				$contactIDsInGroup = [];
+				foreach ($usersInGroup as $userInGroup) {
+					$contactIDForUserID = $this->plugin->civicrm->contact_id_get_by_user_id( $userInGroup['user_id'] );
+					if ($contactIDForUserID) {
+						$contactIDsInGroup[] = $contactIDForUserID;
+					}
+				}
+				$contactIDsNotInGroup = array_diff($contactIDsInGroup, $groupContactContactIDs);
+				if (!empty($contactIDsNotInGroup)) {
+					foreach ($contactIDsNotInGroup as $contactIDToDelete) {
+						$user_id = $this->plugin->wordpress->user_id_get_by_contact_id( $contactIDToDelete );
+						// Add User to "Groups" Group.
+						if ( false !== $user_id ) {
+							// Will automatically skip if already in group
+							$this->plugin->wordpress->group_member_delete( $user_id, $wp_group_id );
+							\Civi::log()->debug('manualsync: deleting user_id: ' . $user_id . ' from group: ' . $wp_group_id);
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 
 }
